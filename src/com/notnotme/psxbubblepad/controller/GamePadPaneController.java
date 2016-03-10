@@ -5,10 +5,7 @@ import com.notnotme.psxbubblepad.model.PsxControllerMode;
 import com.notnotme.psxbubblepad.model.PsxControllerPort;
 import com.notnotme.psxbubblepad.model.PsxButton;
 import com.notnotme.psxbubblepad.model.VitaButton;
-import com.notnotme.psxbubblepad.ui.cell.ControllerControlsListCell;
-import com.notnotme.psxbubblepad.ui.cell.ControllerModeListCell;
-import com.notnotme.psxbubblepad.ui.cell.ControllerPortListCell;
-import com.notnotme.psxbubblepad.ui.cell.PsxButtonListCell;
+import com.notnotme.psxbubblepad.ui.factory.ListCellFactory;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -19,7 +16,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 
 /**
@@ -81,10 +77,8 @@ public class GamePadPaneController implements Initializable {
 		// - Disable the custom controls option and tab at startup
 		// - Enable the custom controls tab if custom controls is selected if value change
 		mCustomControlsTab.setDisable(true);
-		mCustomButtonsCombo.setCellFactory((ListView<PsxControllerMapping> param) -> {
-				return new ControllerControlsListCell(resources);
-		});
-		mCustomButtonsCombo.setButtonCell(new ControllerControlsListCell(resources));
+		mCustomButtonsCombo.setCellFactory(ListCellFactory.getControllerControlsCellFactory(resources));
+		mCustomButtonsCombo.setButtonCell(ListCellFactory.getControllerControlsListCell(resources));
 		mCustomButtonsCombo.setItems(FXCollections.observableArrayList(PsxControllerMapping.values()));
 		mCustomButtonsCombo.setValue(PsxControllerMapping.DEFAULT);
 		mCustomButtonsCombo.valueProperty().addListener((ObservableValue<? extends PsxControllerMapping> observable, PsxControllerMapping oldValue, PsxControllerMapping newValue) -> {
@@ -94,10 +88,8 @@ public class GamePadPaneController implements Initializable {
 
 		// Set datas for the controllers selection (player 1 / player 2) and handle the values change
 		// - Select player 1 by default at startup
-		mControllersCombo.setCellFactory((ListView<PsxControllerPort> param) -> {
-				return new ControllerPortListCell(resources);
-		});
-		mControllersCombo.setButtonCell(new ControllerPortListCell(resources));
+		mControllersCombo.setCellFactory(ListCellFactory.getControllerPortCellFactory(resources));
+		mControllersCombo.setButtonCell(ListCellFactory.getControllerPortListCell(resources));
 		mControllersCombo.setItems(FXCollections.observableArrayList(PsxControllerPort.values()));
 		mControllersCombo.setValue(PsxControllerPort.PORT_1);
 		mControllersCombo.valueProperty().addListener((ObservableValue<? extends PsxControllerPort> observable, PsxControllerPort oldValue, PsxControllerPort newValue) -> {
@@ -106,10 +98,8 @@ public class GamePadPaneController implements Initializable {
 
 		// Set datas for the controllers mode selection (analog/numeric) and handle the values change
 		// - Select numeric by default at startup
-		mModesCombo.setCellFactory((ListView<PsxControllerMode> param) -> {
-				return new ControllerModeListCell(resources);
-		});
-		mModesCombo.setButtonCell(new ControllerModeListCell(resources));
+		mModesCombo.setCellFactory(ListCellFactory.getControllerModeCellFactory(resources));
+		mModesCombo.setButtonCell(ListCellFactory.getControllerModeListCell(resources));
 		mModesCombo.setItems(FXCollections.observableArrayList(PsxControllerMode.values()));
 		mModesCombo.setValue(PsxControllerMode.NUMERIC);
 		mModesCombo.valueProperty().addListener((ObservableValue<? extends PsxControllerMode> observable, PsxControllerMode oldValue, PsxControllerMode newValue) -> {
@@ -123,163 +113,127 @@ public class GamePadPaneController implements Initializable {
 				PsxButton.CROSS, PsxButton.SQUARE, PsxButton.CIRCLE, PsxButton.TRIANGLE, PsxButton.L1, PsxButton.L2,
 				PsxButton.L3, PsxButton.R1, PsxButton.R2, PsxButton.R3, PsxButton.L1_R1, PsxButton.L2_R2);
 
-		mUpButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mUpButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mUpButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mUpButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mUpButtonCombo.setItems(buttons);
 		mUpButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.UP, newValue);
 		});
 
-		mLeftButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mLeftButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mLeftButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mLeftButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mLeftButtonCombo.setItems(buttons);
 		mLeftButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.LEFT, newValue);
 		});
 
-		mRightButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mRightButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mRightButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mRightButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mRightButtonCombo.setItems(buttons);
 		mRightButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.RIGHT, newValue);
 		});
 
-		mDownButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mDownButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mDownButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mDownButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mDownButtonCombo.setItems(buttons);
 		mDownButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.DOWN, newValue);
 		});
 
-		mLButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mLButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mLButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mLButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mLButtonCombo.setItems(buttons);
 		mLButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.L, newValue);
 		});
 
-		mRButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mRButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mRButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mRButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mRButtonCombo.setItems(buttons);
 		mRButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.R, newValue);
 		});
 
-		mSquareButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mSquareButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mSquareButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mSquareButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mSquareButtonCombo.setItems(buttons);
 		mSquareButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.SQUARE, newValue);
 		});
 
-		mCrossButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mCrossButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mCrossButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mCrossButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mCrossButtonCombo.setItems(buttons);
 		mCrossButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.CROSS, newValue);
 		});
 
-		mCircleButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mCircleButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mCircleButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mCircleButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mCircleButtonCombo.setItems(buttons);
 		mCircleButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.CIRCLE, newValue);
 		});
 
-		mTriangleButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mTriangleButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mTriangleButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mTriangleButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mTriangleButtonCombo.setItems(buttons);
 		mTriangleButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.TRIANGLE, newValue);
 		});
 
-		mLStickLeftButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mLStickLeftButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mLStickLeftButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mLStickLeftButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mLStickLeftButtonCombo.setItems(buttons);
 		mLStickLeftButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.LEFT_ANALOG_LEFT, newValue);
 		});
 
-		mLStickRightButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mLStickRightButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mLStickRightButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mLStickRightButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mLStickRightButtonCombo.setItems(buttons);
 		mLStickRightButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.LEFT_LANALOG_RIGHT, newValue);
 		});
 
-		mLStickUpButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mLStickUpButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mLStickUpButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mLStickUpButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mLStickUpButtonCombo.setItems(buttons);
 		mLStickUpButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.LEFT_ANALOG_UP, newValue);
 		});
 
-		mLStickDownButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mLStickDownButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mLStickDownButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mLStickDownButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mLStickDownButtonCombo.setItems(buttons);
 		mLStickDownButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.LEFT_ANALOG_DOWN, newValue);
 		});
 
-		mRStickLeftButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mRStickLeftButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mRStickLeftButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mRStickLeftButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mRStickLeftButtonCombo.setItems(buttons);
 		mRStickLeftButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.RIGHT_ANALOG_LEFT, newValue);
 		});
 
-		mRStickRightButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mRStickRightButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mRStickRightButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mRStickRightButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mRStickRightButtonCombo.setItems(buttons);
 		mRStickRightButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.RIGHT_ANALOG_RIGHT, newValue);
 		});
 
-		mRStickUpButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mRStickUpButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mRStickUpButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mRStickUpButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mRStickUpButtonCombo.setItems(buttons);
 		mRStickUpButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.RIGHT_ANALOG_UP, newValue);
 		});
 
-		mRStickDownButtonCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mRStickDownButtonCombo.setButtonCell(new PsxButtonListCell(resources));
+		mRStickDownButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mRStickDownButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mRStickDownButtonCombo.setItems(buttons);
 		mRStickDownButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.RIGHT_ANALOG_DOWN, newValue);
@@ -311,37 +265,29 @@ public class GamePadPaneController implements Initializable {
 				PsxButton.CROSS, PsxButton.SQUARE, PsxButton.CIRCLE, PsxButton.TRIANGLE, PsxButton.L1, PsxButton.L2,
 				PsxButton.L3, PsxButton.R1, PsxButton.R2, PsxButton.R3);
 
-		mTouchUpperLeftCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mTouchUpperLeftCombo.setButtonCell(new PsxButtonListCell(resources));
+		mTouchUpperLeftCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mTouchUpperLeftCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mTouchUpperLeftCombo.setItems(buttons);
 		mTouchUpperLeftCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.TOUCH_UPPER_LEFT, newValue);
 		});
 
-		mTouchUpperRightCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mTouchUpperRightCombo.setButtonCell(new PsxButtonListCell(resources));
+		mTouchUpperRightCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mTouchUpperRightCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mTouchUpperRightCombo.setItems(buttons);
 		mTouchUpperRightCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.TOUCH_UPPER_RIGHT, newValue);
 		});
 
-		mTouchBottomLeftCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mTouchBottomLeftCombo.setButtonCell(new PsxButtonListCell(resources));
+		mTouchBottomLeftCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mTouchBottomLeftCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mTouchBottomLeftCombo.setItems(buttons);
 		mTouchBottomLeftCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.TOUCH_BOTTOM_LEFT, newValue);
 		});
 
-		mTouchBottomRightCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mTouchBottomRightCombo.setButtonCell(new PsxButtonListCell(resources));
+		mTouchBottomRightCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mTouchBottomRightCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mTouchBottomRightCombo.setItems(buttons);
 		mTouchBottomRightCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.TOUCH_BOTTOM_RIGHT, newValue);
@@ -357,37 +303,29 @@ public class GamePadPaneController implements Initializable {
 		ObservableList<PsxButton> rButtons = FXCollections.observableArrayList(PsxButton.UNUSED, PsxButton.R1, PsxButton.R2, PsxButton.R3);
 		ObservableList<PsxButton> lButtons = FXCollections.observableArrayList(PsxButton.UNUSED, PsxButton.L1, PsxButton.L2, PsxButton.L3);
 
-		mRearTouchUpperLeftCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mRearTouchUpperLeftCombo.setButtonCell(new PsxButtonListCell(resources));
+		mRearTouchUpperLeftCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mRearTouchUpperLeftCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mRearTouchUpperLeftCombo.setItems(lButtons);
 		mRearTouchUpperLeftCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.REAR_TOUCH_UPPER_LEFT, newValue);
 		});
 
-		mRearTouchUpperRightCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mRearTouchUpperRightCombo.setButtonCell(new PsxButtonListCell(resources));
+		mRearTouchUpperRightCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mRearTouchUpperRightCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mRearTouchUpperRightCombo.setItems(rButtons);
 		mRearTouchBottomRightCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.REAR_TOUCH_UPPER_RIGHT, newValue);
 		});
 
-		mRearTouchBottomLeftCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mRearTouchBottomLeftCombo.setButtonCell(new PsxButtonListCell(resources));
+		mRearTouchBottomLeftCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mRearTouchBottomLeftCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mRearTouchBottomLeftCombo.setItems(lButtons);
 		mRearTouchBottomLeftCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.REAR_TOUCH_BOTTOM_LEFT, newValue);
 		});
 
-		mRearTouchBottomRightCombo.setCellFactory((ListView<PsxButton> param) -> {
-			return new PsxButtonListCell(resources);
-		});
-		mRearTouchBottomRightCombo.setButtonCell(new PsxButtonListCell(resources));
+		mRearTouchBottomRightCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
+		mRearTouchBottomRightCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mRearTouchBottomRightCombo.setItems(rButtons);
 		mRearTouchBottomRightCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.REAR_TOUCH_BOTTOM_RIGHT, newValue);
