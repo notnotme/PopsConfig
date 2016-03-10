@@ -1,6 +1,10 @@
 package com.notnotme.psxbubblepad.controller;
 
+import com.notnotme.psxbubblepad.sound.ModulePlayer;
 import com.sun.javafx.stage.StageHelper;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -22,6 +26,7 @@ public class AboutDialogController implements Initializable {
 	private final static String TAG = AboutDialogController.class.getSimpleName();
 
 	private Stage mStage;
+	private ModulePlayer mPlayer;
 
 	@FXML private AnchorPane mRoot;
 
@@ -37,10 +42,10 @@ public class AboutDialogController implements Initializable {
 		mStage.setScene(new Scene(mRoot));
 		mStage.setResizable(false);
 		mStage.setOnShown((WindowEvent event) -> {
-			// todo: start music & anim
+			onEnter();
 		});
-		mStage.setOnCloseRequest((WindowEvent event) -> {
-			// todo: stop music & anim
+		mStage.setOnHiding((WindowEvent event) -> {
+			onExit();
 		});
 
 		mRoot.setOnMouseClicked((MouseEvent event) -> {
@@ -48,6 +53,19 @@ public class AboutDialogController implements Initializable {
 		});
 
 		mStage.show();
+	}
+
+	private void onEnter() {
+		try {
+			mPlayer = new ModulePlayer(getClass().getResource("/com/notnotme/psxbubblepad/res/Ultrasyd-Groovy Elisa.xm").toURI().toURL());
+			new Thread(mPlayer).start();
+		} catch (IOException | URISyntaxException ex) {
+			Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
+		}
+	}
+
+	private void onExit() {
+		mPlayer.stop();
 	}
 
 }
