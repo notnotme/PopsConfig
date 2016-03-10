@@ -1,6 +1,5 @@
 package com.notnotme.psxbubblepad.controller;
 
-import com.notnotme.psxbubblepad.controller.GamePadController;
 import com.notnotme.psxbubblepad.model.PsxControllerMapping;
 import com.notnotme.psxbubblepad.model.PsxControllerMode;
 import com.notnotme.psxbubblepad.model.PsxControllerPort;
