@@ -16,28 +16,28 @@ import javafx.util.Callback;
  */
 public class ControllerFactory implements Callback<Class<?>,Object> {
 
-    private final Stage mStage;
-    private final HostServices mHostServices;
+	private final Stage mStage;
+	private final HostServices mHostServices;
 
-    public ControllerFactory(Stage stage) {
+	public ControllerFactory(Stage stage) {
 		mStage = stage;
-        mHostServices = null;
-    }
+		mHostServices = null;
+	}
 
 	public ControllerFactory(HostServices hostServices) {
 		mStage = null;
-        mHostServices = hostServices;
-    }
+		mHostServices = hostServices;
+	}
 
 	public ControllerFactory(HostServices hostServices, Stage stage) {
 		mStage = stage;
-        mHostServices = hostServices;
-    }
+		mHostServices = hostServices;
+	}
 
 	@Override
-    public Object call(Class<?> type) {
-        try {
-            for (Constructor<?> c : type.getConstructors()) {
+	public Object call(Class<?> type) {
+		try {
+			for (Constructor<?> c : type.getConstructors()) {
 				Class<?>[] params = c.getParameterTypes();
 				int paramCount = c.getParameterCount();
 
@@ -56,12 +56,12 @@ public class ControllerFactory implements Callback<Class<?>,Object> {
 						return c.newInstance(mStage, mHostServices);
 					}
 				}
-            }
-        } catch (SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+			}
+		} catch (SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			throw new RuntimeException(e);
+		}
 
 		throw new RuntimeException("No constructor found");
-    }
+	}
 
 }
