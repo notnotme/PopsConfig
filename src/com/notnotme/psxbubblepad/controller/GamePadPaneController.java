@@ -1,10 +1,10 @@
 package com.notnotme.psxbubblepad.controller;
 
-import com.notnotme.psxbubblepad.model.PsxControllerMapping;
-import com.notnotme.psxbubblepad.model.PsxControllerMode;
-import com.notnotme.psxbubblepad.model.PsxControllerPort;
-import com.notnotme.psxbubblepad.model.PsxButton;
-import com.notnotme.psxbubblepad.model.VitaButton;
+import com.notnotme.psxbubblepad.model.gamepad.PsxControllerMapping;
+import com.notnotme.psxbubblepad.model.gamepad.PsxControllerMode;
+import com.notnotme.psxbubblepad.model.gamepad.PsxControllerPort;
+import com.notnotme.psxbubblepad.model.gamepad.PsxButton;
+import com.notnotme.psxbubblepad.model.gamepad.VitaButton;
 import com.notnotme.psxbubblepad.ui.factory.ListCellFactory;
 import java.net.URL;
 import java.util.ResourceBundle;

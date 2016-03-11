@@ -1,4 +1,4 @@
-package com.notnotme.psxbubblepad.model;
+package com.notnotme.psxbubblepad.model.gamepad;
 
 import java.util.ArrayList;
 import java.util.List;

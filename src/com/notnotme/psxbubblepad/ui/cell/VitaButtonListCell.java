@@ -1,6 +1,6 @@
 package com.notnotme.psxbubblepad.ui.cell;
 
-import com.notnotme.psxbubblepad.model.VitaButton;
+import com.notnotme.psxbubblepad.model.gamepad.VitaButton;
 import java.util.ResourceBundle;
 import javafx.scene.control.ListCell;
 

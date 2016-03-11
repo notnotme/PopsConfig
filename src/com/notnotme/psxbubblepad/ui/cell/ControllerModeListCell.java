@@ -1,6 +1,6 @@
 package com.notnotme.psxbubblepad.ui.cell;
 
-import com.notnotme.psxbubblepad.model.PsxControllerMode;
+import com.notnotme.psxbubblepad.model.gamepad.PsxControllerMode;
 import java.util.ResourceBundle;
 import javafx.scene.control.ListCell;
 
