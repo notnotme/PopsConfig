@@ -1,17 +1,17 @@
 package com.notnotme.psxbubblepad.controller;
 
-import com.notnotme.psxbubblepad.PsxBubblePad;
-import com.sun.javafx.stage.StageHelper;
+import com.notnotme.psxbubblepad.controller.factory.FXMLController;
+import com.notnotme.psxbubblepad.controller.factory.ControllerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -27,12 +27,10 @@ import javafx.stage.WindowEvent;
 /**
  * @author romain
  */
-public class MainWindowController implements Initializable {
+public class MainWindowController extends FXMLController {
 
 	private final static String TAG = MainWindowController.class.getSimpleName();
 
-	private Stage mStage;
-	private ResourceBundle mResources;
 	private FileChooser mFileChooser;
 	private boolean mFirstConfig;
 
@@ -57,14 +55,16 @@ public class MainWindowController implements Initializable {
 		}
 	};
 
+	public MainWindowController(HostServices hostServices, Stage stage) {
+		super(hostServices, stage);
+	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		super.initialize(location, resources);
 		Logger.getLogger(TAG).log(
 				Level.INFO, "initialize() location: {0}, resources: {1}",
 				new Object[]{location, resources});
-
-		mResources = resources;
-		mFirstConfig = true;
 
 		// Setup the main content
 		try {
@@ -96,8 +96,7 @@ public class MainWindowController implements Initializable {
 		// - set title and scene
 		// - set no resizable and center on screen
 		// - set show/hide listeners and show
-		mStage = StageHelper.getStages().remove(0);
-		mStage.setTitle(mResources.getString("appname") + " v" + PsxBubblePad.VERSION);
+		mStage.setTitle(resources.getString("appname"));
 		mStage.setScene(new Scene(mRoot));
 		mStage.centerOnScreen();
 		mStage.setResizable(false);
@@ -124,6 +123,7 @@ public class MainWindowController implements Initializable {
 		mStage.show();
 
 		// prepare other data that is not shown at startup
+		mFirstConfig = true;
 		mFileChooser = new FileChooser();
 		mFileChooser.getExtensionFilters().add(
 			new FileChooser.ExtensionFilter("IN WHAT FORMAT I SAVE ? DB OR FILE ???", "*.wtf"));
@@ -143,11 +143,12 @@ public class MainWindowController implements Initializable {
 			// available in the controller init code
 			Stage stage = new Stage();
 			stage.initOwner(mStage);
-			StageHelper.getStages().add(0, stage);
-
 			FXMLLoader.load(
 					getClass().getResource("/com/notnotme/psxbubblepad/ui/fxml/AboutDialog.fxml"),
-					ResourceBundle.getBundle("com.notnotme.psxbubblepad.ui.fxml.ui"));
+					ResourceBundle.getBundle("com.notnotme.psxbubblepad.ui.fxml.ui"),
+					null,
+					new ControllerFactory(mHostServices, stage));
+
 		} catch (IOException ex) {
 			Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
 
