@@ -31,6 +31,8 @@ public class AboutDialogController extends FXMLController {
 	@FXML private VBox mRoot;
 	@FXML private Hyperlink mWebsiteLink;
 	@FXML private Hyperlink mGithubLink;
+	@FXML private Hyperlink mSongLink;
+	@FXML private Hyperlink mMuxmLink;
 
 	public AboutDialogController(HostServices hostServices, Stage stage) {
 		super(hostServices, stage);
@@ -51,6 +53,12 @@ public class AboutDialogController extends FXMLController {
 		});
 		mGithubLink.setOnAction((ActionEvent event) -> {
 			mHostServices.showDocument(mGithubLink.getText());
+		});
+		mMuxmLink.setOnAction((ActionEvent event) -> {
+			mHostServices.showDocument("http://musound.sourceforge.net/muxm/index.html");
+		});
+		mSongLink.setOnAction((ActionEvent event) -> {
+			mHostServices.showDocument("http://ultrasyd.free.fr/");
 		});
 
 		mStage.initModality(Modality.APPLICATION_MODAL);
