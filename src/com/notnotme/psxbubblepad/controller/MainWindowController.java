@@ -101,21 +101,10 @@ public class MainWindowController extends FXMLController {
 		mStage.centerOnScreen();
 		mStage.setResizable(false);
 		mStage.setOnShown((WindowEvent event) -> {
-			GamePadController.getInstance().addListener(mOnPadChangeListener);
+			onEnter();
 		});
 		mStage.setOnHiding((WindowEvent event) -> {
-			GamePadController controller = GamePadController.getInstance();
-			if (!controller.isSaved() && !mFirstConfig) {
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-				alert.setTitle(mResources.getString("warning"));
-				alert.setHeaderText(mResources.getString("exit_without_saving_title"));
-				alert.setContentText(mResources.getString("exit_without_saving_content"));
-				alert.showAndWait();
-				if (alert.getResult() != ButtonType.OK) {
-					saveConfig();
-				}
-			}
-			GamePadController.getInstance().removeListener(mOnPadChangeListener);
+			onExit();
 		});
 
 		// Application is ready so show it
@@ -155,6 +144,25 @@ public class MainWindowController extends FXMLController {
 			mStatusLabel.setText(ex.getLocalizedMessage());
 			mStatusLabel.setTextFill(Paint.valueOf("red"));
 		}
+	}
+
+	private void onEnter() {
+		GamePadController.getInstance().addListener(mOnPadChangeListener);
+	}
+
+	private void onExit() {
+		GamePadController controller = GamePadController.getInstance();
+		if (!controller.isSaved() && !mFirstConfig) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle(mResources.getString("warning"));
+			alert.setHeaderText(mResources.getString("exit_without_saving_title"));
+			alert.setContentText(mResources.getString("exit_without_saving_content"));
+			alert.showAndWait();
+			if (alert.getResult() != ButtonType.OK) {
+				saveConfig();
+			}
+		}
+		GamePadController.getInstance().removeListener(mOnPadChangeListener);
 	}
 
 }
