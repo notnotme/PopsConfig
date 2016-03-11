@@ -13,6 +13,12 @@ import java.util.logging.Logger;
 
 /**
  * @author romain
+ *
+ * Extends GamePad and use the Singleton pattern to make it available
+ * trougth all the application.
+ *
+ * You can register a OnPadChangeListener to be notified each time
+ * a data is changed inside the GamePad model.
  */
 public class GamePadController extends GamePad {
 
@@ -27,6 +33,9 @@ public class GamePadController extends GamePad {
 		return sINSTANCE;
 	}
 
+	/**
+	 * Interface called when the model change or is saved
+	 */
 	public interface OnPadChangeListener {
 		void onChanged();
 		void onSaved();
@@ -101,6 +110,10 @@ public class GamePadController extends GamePad {
 		invalidateChange();
 	}
 
+
+	/**
+	 * Notify all listener of the changes
+	 */
 	private void invalidateChange() {
 		mPadChangeListeners.stream().forEach((onPadChangeListener) -> {
 			onPadChangeListener.onChanged();

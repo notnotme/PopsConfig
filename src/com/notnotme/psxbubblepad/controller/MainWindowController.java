@@ -40,6 +40,9 @@ public class MainWindowController extends FXMLController {
 	@FXML private MenuItem mItemAbout;
 	@FXML private Label mStatusLabel;
 
+	/**
+	 * A OnPadChangeListener that update the status bar when the GamePad model is saved or modified.
+	 */
 	private final GamePadController.OnPadChangeListener mOnPadChangeListener = new GamePadController.OnPadChangeListener() {
 		@Override
 		public void onChanged() {
@@ -127,9 +130,6 @@ public class MainWindowController extends FXMLController {
 
 	private void showAboutDialog() {
 		try {
-			// Create stage here to init owner
-			// then add it to stage helper to make it
-			// available in the controller init code
 			Stage stage = new Stage();
 			stage.initOwner(mStage);
 			FXMLLoader.load(
@@ -140,16 +140,22 @@ public class MainWindowController extends FXMLController {
 
 		} catch (IOException ex) {
 			Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-
 			mStatusLabel.setText(ex.getLocalizedMessage());
 			mStatusLabel.setTextFill(Paint.valueOf("red"));
 		}
 	}
 
+	/**
+	 * Called when the window is initialy shown
+	 */
 	private void onEnter() {
 		GamePadController.getInstance().addListener(mOnPadChangeListener);
 	}
 
+	/**
+	 * Called when the user quit
+	 * Ask for save change if needed
+	 */
 	private void onExit() {
 		GamePadController controller = GamePadController.getInstance();
 		if (!controller.isSaved() && !mFirstConfig) {
