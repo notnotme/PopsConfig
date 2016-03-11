@@ -77,7 +77,9 @@ public class AboutDialogController extends FXMLController {
 	}
 
 	private void onExit() {
-		mPlayer.stop();
+		if (mPlayer != null) {
+			mPlayer.stop();
+		}
 	}
 
 }
