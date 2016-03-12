@@ -1,13 +1,13 @@
 package com.notnotme.psxbubblepad.ui.cell;
 
-import com.notnotme.psxbubblepad.model.gamepad.PsxControllerPort;
+import com.notnotme.psxbubblepad.model.gamepad.GamePadPort;
 import java.util.ResourceBundle;
 import javafx.scene.control.ListCell;
 
 /**
  * @author romain
  */
-public class ControllerPortListCell extends ListCell<PsxControllerPort> {
+public class ControllerPortListCell extends ListCell<GamePadPort> {
 
 	private final ResourceBundle mResources;
 
@@ -16,7 +16,7 @@ public class ControllerPortListCell extends ListCell<PsxControllerPort> {
 	}
 
 	@Override
-	protected void updateItem(PsxControllerPort item, boolean empty) {
+	protected void updateItem(GamePadPort item, boolean empty) {
 		super.updateItem(item, empty);
 		if (item == null || empty) {
 			setText(null);

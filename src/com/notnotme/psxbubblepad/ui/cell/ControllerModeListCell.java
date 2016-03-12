@@ -1,13 +1,13 @@
 package com.notnotme.psxbubblepad.ui.cell;
 
-import com.notnotme.psxbubblepad.model.gamepad.PsxControllerMode;
+import com.notnotme.psxbubblepad.model.gamepad.GamePadMode;
 import java.util.ResourceBundle;
 import javafx.scene.control.ListCell;
 
 /**
  * @author romain
  */
-public class ControllerModeListCell extends ListCell<PsxControllerMode> {
+public class ControllerModeListCell extends ListCell<GamePadMode> {
 
 	private final ResourceBundle mResources;
 
@@ -16,7 +16,7 @@ public class ControllerModeListCell extends ListCell<PsxControllerMode> {
 	}
 
 	@Override
-	protected void updateItem(PsxControllerMode item, boolean empty) {
+	protected void updateItem(GamePadMode item, boolean empty) {
 		super.updateItem(item, empty);
 		if (item == null || empty) {
 			setText(null);

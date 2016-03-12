@@ -10,9 +10,9 @@ import javafx.util.Pair;
 public class GamePad {
 
 	protected final PsxButton mButtonConfig[];
-	protected PsxControllerMapping mControls;
-	protected PsxControllerMode mControllerMode;
-	protected PsxControllerPort mControllerPort;
+	protected GamePadMapping mControls;
+	protected GamePadMode mControllerMode;
+	protected GamePadPort mControllerPort;
 
 	public GamePad() {
 		mButtonConfig = new PsxButton[VitaButton.values().length];
@@ -20,9 +20,9 @@ public class GamePad {
 			mButtonConfig[button.ordinal()] = PsxButton.UNUSED;
 		}
 
-		mControls = PsxControllerMapping.DEFAULT;
-		mControllerMode = PsxControllerMode.NUMERIC;
-		mControllerPort = PsxControllerPort.PORT_1;
+		mControls = GamePadMapping.DEFAULT;
+		mControllerMode = GamePadMode.NUMERIC;
+		mControllerPort = GamePadPort.PORT_1;
 	}
 
 	/**
@@ -50,6 +50,7 @@ public class GamePad {
 					default:
 						break;
 				}
+				break;
 			case REAR_TOUCH_BOTTOM_LEFT:
 			case REAR_TOUCH_BOTTOM_RIGHT:
 			case REAR_TOUCH_UPPER_LEFT:
@@ -68,6 +69,7 @@ public class GamePad {
 					default:
 						throw new Exception("Cannot assign rear touch with something else that R/L 1,2,3");
 				}
+				break;
 		}
 
 		mButtonConfig[vitaButton.ordinal()] = psxButton;
@@ -84,27 +86,27 @@ public class GamePad {
 	}
 
 
-	public void setControls(PsxControllerMapping controls) {
+	public void setControls(GamePadMapping controls) {
 		mControls = controls;
 	}
 
-	public void setControllerMode(PsxControllerMode mode) {
+	public void setControllerMode(GamePadMode mode) {
 		mControllerMode = mode;
 	}
 
-	public void setControllerPort(PsxControllerPort port) {
+	public void setControllerPort(GamePadPort port) {
 		mControllerPort = port;
 	}
 
-	public PsxControllerMapping getControls() {
+	public GamePadMapping getControls() {
 		return mControls;
 	}
 
-	public PsxControllerMode getControllerMode() {
+	public GamePadMode getControllerMode() {
 		return mControllerMode;
 	}
 
-	public PsxControllerPort getControllerPort() {
+	public GamePadPort getControllerPort() {
 		return mControllerPort;
 	}
 

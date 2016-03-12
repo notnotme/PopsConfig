@@ -1,9 +1,9 @@
 package com.notnotme.psxbubblepad.controller;
 
 import com.notnotme.psxbubblepad.model.gamepad.PsxButton;
-import com.notnotme.psxbubblepad.model.gamepad.PsxControllerMapping;
-import com.notnotme.psxbubblepad.model.gamepad.PsxControllerMode;
-import com.notnotme.psxbubblepad.model.gamepad.PsxControllerPort;
+import com.notnotme.psxbubblepad.model.gamepad.GamePadMapping;
+import com.notnotme.psxbubblepad.model.gamepad.GamePadMode;
+import com.notnotme.psxbubblepad.model.gamepad.GamePadPort;
 import com.notnotme.psxbubblepad.model.gamepad.GamePad;
 import com.notnotme.psxbubblepad.model.gamepad.VitaButton;
 import java.io.File;
@@ -75,7 +75,7 @@ public class GamePadController extends GamePad {
 	}
 
 	@Override
-	public void setControllerPort(PsxControllerPort port) {
+	public void setControllerPort(GamePadPort port) {
 		if (port == getControllerPort()) return;
 
 		super.setControllerPort(port);
@@ -84,7 +84,7 @@ public class GamePadController extends GamePad {
 	}
 
 	@Override
-	public void setControllerMode(PsxControllerMode mode) {
+	public void setControllerMode(GamePadMode mode) {
 		if (mode == getControllerMode()) return;
 
 		super.setControllerMode(mode);
@@ -93,7 +93,7 @@ public class GamePadController extends GamePad {
 	}
 
 	@Override
-	public void setControls(PsxControllerMapping controls) {
+	public void setControls(GamePadMapping controls) {
 		if (controls == getControls()) return;
 
 		super.setControls(controls);

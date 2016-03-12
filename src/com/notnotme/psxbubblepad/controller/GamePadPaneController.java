@@ -1,8 +1,8 @@
 package com.notnotme.psxbubblepad.controller;
 
-import com.notnotme.psxbubblepad.model.gamepad.PsxControllerMapping;
-import com.notnotme.psxbubblepad.model.gamepad.PsxControllerMode;
-import com.notnotme.psxbubblepad.model.gamepad.PsxControllerPort;
+import com.notnotme.psxbubblepad.model.gamepad.GamePadMapping;
+import com.notnotme.psxbubblepad.model.gamepad.GamePadMode;
+import com.notnotme.psxbubblepad.model.gamepad.GamePadPort;
 import com.notnotme.psxbubblepad.model.gamepad.PsxButton;
 import com.notnotme.psxbubblepad.model.gamepad.VitaButton;
 import com.notnotme.psxbubblepad.ui.factory.ListCellFactory;
@@ -27,9 +27,9 @@ public class GamePadPaneController implements Initializable {
 
 	@FXML private Tab mCustomControlsTab;
 
-	@FXML private ComboBox<PsxControllerMapping> mCustomButtonsCombo;
-	@FXML private ComboBox<PsxControllerPort> mControllersCombo;
-	@FXML private ComboBox<PsxControllerMode> mModesCombo;
+	@FXML private ComboBox<GamePadMapping> mCustomButtonsCombo;
+	@FXML private ComboBox<GamePadPort> mControllersCombo;
+	@FXML private ComboBox<GamePadMode> mModesCombo;
 
 	@FXML private ComboBox<PsxButton> mTouchUpperLeftCombo;
 	@FXML private ComboBox<PsxButton> mTouchUpperRightCombo;
@@ -79,10 +79,10 @@ public class GamePadPaneController implements Initializable {
 		mCustomControlsTab.setDisable(true);
 		mCustomButtonsCombo.setCellFactory(ListCellFactory.getControllerControlsCellFactory(resources));
 		mCustomButtonsCombo.setButtonCell(ListCellFactory.getControllerControlsListCell(resources));
-		mCustomButtonsCombo.setItems(FXCollections.observableArrayList(PsxControllerMapping.values()));
-		mCustomButtonsCombo.setValue(PsxControllerMapping.DEFAULT);
-		mCustomButtonsCombo.valueProperty().addListener((ObservableValue<? extends PsxControllerMapping> observable, PsxControllerMapping oldValue, PsxControllerMapping newValue) -> {
-			mCustomControlsTab.setDisable(newValue == PsxControllerMapping.DEFAULT);
+		mCustomButtonsCombo.setItems(FXCollections.observableArrayList(GamePadMapping.values()));
+		mCustomButtonsCombo.setValue(GamePadMapping.DEFAULT);
+		mCustomButtonsCombo.valueProperty().addListener((ObservableValue<? extends GamePadMapping> observable, GamePadMapping oldValue, GamePadMapping newValue) -> {
+			mCustomControlsTab.setDisable(newValue == GamePadMapping.DEFAULT);
 			GamePadController.getInstance().setControls(newValue);
 		});
 
@@ -90,9 +90,9 @@ public class GamePadPaneController implements Initializable {
 		// - Select player 1 by default at startup
 		mControllersCombo.setCellFactory(ListCellFactory.getControllerPortCellFactory(resources));
 		mControllersCombo.setButtonCell(ListCellFactory.getControllerPortListCell(resources));
-		mControllersCombo.setItems(FXCollections.observableArrayList(PsxControllerPort.values()));
-		mControllersCombo.setValue(PsxControllerPort.PORT_1);
-		mControllersCombo.valueProperty().addListener((ObservableValue<? extends PsxControllerPort> observable, PsxControllerPort oldValue, PsxControllerPort newValue) -> {
+		mControllersCombo.setItems(FXCollections.observableArrayList(GamePadPort.values()));
+		mControllersCombo.setValue(GamePadPort.PORT_1);
+		mControllersCombo.valueProperty().addListener((ObservableValue<? extends GamePadPort> observable, GamePadPort oldValue, GamePadPort newValue) -> {
 			GamePadController.getInstance().setControllerPort(newValue);
 		});
 
@@ -100,9 +100,9 @@ public class GamePadPaneController implements Initializable {
 		// - Select numeric by default at startup
 		mModesCombo.setCellFactory(ListCellFactory.getControllerModeCellFactory(resources));
 		mModesCombo.setButtonCell(ListCellFactory.getControllerModeListCell(resources));
-		mModesCombo.setItems(FXCollections.observableArrayList(PsxControllerMode.values()));
-		mModesCombo.setValue(PsxControllerMode.NUMERIC);
-		mModesCombo.valueProperty().addListener((ObservableValue<? extends PsxControllerMode> observable, PsxControllerMode oldValue, PsxControllerMode newValue) -> {
+		mModesCombo.setItems(FXCollections.observableArrayList(GamePadMode.values()));
+		mModesCombo.setValue(GamePadMode.NUMERIC);
+		mModesCombo.valueProperty().addListener((ObservableValue<? extends GamePadMode> observable, GamePadMode oldValue, GamePadMode newValue) -> {
 			GamePadController.getInstance().setControllerMode(newValue);
 		});
 	}
@@ -341,6 +341,7 @@ public class GamePadPaneController implements Initializable {
 		try {
 			GamePadController.getInstance().assign(vitaButton, psxButton);
 		} catch (Exception e) {
+			Logger.getLogger(TAG).log(Level.INFO, null, e);
 			Logger.getLogger(TAG).log(
 				Level.INFO, "Bind button fail: VitaButton: {0}, PsxButton: {1}",
 				new Object[]{vitaButton, psxButton});

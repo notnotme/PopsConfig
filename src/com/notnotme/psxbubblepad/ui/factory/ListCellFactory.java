@@ -1,9 +1,9 @@
 package com.notnotme.psxbubblepad.ui.factory;
 
 import com.notnotme.psxbubblepad.model.gamepad.PsxButton;
-import com.notnotme.psxbubblepad.model.gamepad.PsxControllerMapping;
-import com.notnotme.psxbubblepad.model.gamepad.PsxControllerMode;
-import com.notnotme.psxbubblepad.model.gamepad.PsxControllerPort;
+import com.notnotme.psxbubblepad.model.gamepad.GamePadMapping;
+import com.notnotme.psxbubblepad.model.gamepad.GamePadMode;
+import com.notnotme.psxbubblepad.model.gamepad.GamePadPort;
 import com.notnotme.psxbubblepad.ui.cell.ControllerControlsListCell;
 import com.notnotme.psxbubblepad.ui.cell.ControllerModeListCell;
 import com.notnotme.psxbubblepad.ui.cell.ControllerPortListCell;
@@ -30,24 +30,24 @@ public class ListCellFactory {
 		return new ControllerControlsListCell(resources);
 	}
 
-	public static Callback<ListView<PsxControllerMapping>, ListCell<PsxControllerMapping>> getControllerControlsCellFactory(ResourceBundle resources) {
-		return (ListView<PsxControllerMapping> param) -> getControllerControlsListCell(resources);
+	public static Callback<ListView<GamePadMapping>, ListCell<GamePadMapping>> getControllerControlsCellFactory(ResourceBundle resources) {
+		return (ListView<GamePadMapping> param) -> getControllerControlsListCell(resources);
 	}
 
 	public static ControllerPortListCell getControllerPortListCell(ResourceBundle resources) {
 		return new ControllerPortListCell(resources);
 	}
 
-	public static Callback<ListView<PsxControllerPort>, ListCell<PsxControllerPort>> getControllerPortCellFactory(ResourceBundle resources) {
-		return (ListView<PsxControllerPort> param) -> getControllerPortListCell(resources);
+	public static Callback<ListView<GamePadPort>, ListCell<GamePadPort>> getControllerPortCellFactory(ResourceBundle resources) {
+		return (ListView<GamePadPort> param) -> getControllerPortListCell(resources);
 	}
 
 	public static ControllerModeListCell getControllerModeListCell(ResourceBundle resources) {
 		return new ControllerModeListCell(resources);
 	}
 
-	public static Callback<ListView<PsxControllerMode>, ListCell<PsxControllerMode>> getControllerModeCellFactory(ResourceBundle resources) {
-		return (ListView<PsxControllerMode> param) -> getControllerModeListCell(resources);
+	public static Callback<ListView<GamePadMode>, ListCell<GamePadMode>> getControllerModeCellFactory(ResourceBundle resources) {
+		return (ListView<GamePadMode> param) -> getControllerModeListCell(resources);
 	}
 
 }

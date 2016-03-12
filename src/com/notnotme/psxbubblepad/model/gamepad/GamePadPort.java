@@ -3,14 +3,14 @@ package com.notnotme.psxbubblepad.model.gamepad;
 /**
  * @author romain
  */
-public enum PsxControllerMode {
+public enum GamePadPort {
 
-	ANALOG("mode.analog"),
-	NUMERIC("mode.numeric");
+	PORT_1("port.pad1"),
+	PORT_2("port.pad2");
 
 	private final String mName;
 
-	private PsxControllerMode(String name) {
+	private GamePadPort(String name) {
 		mName = name;
 	}
 
