@@ -5,36 +5,107 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
 <javafx.scene.control.TabPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.notnotme.psxbubblepad.controller.GamePadPaneController">
    <tabs>
       <Tab closable="false" text="%tab_controls">
          <content>
-            <GridPane vgap="5.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS" />
-                <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints vgrow="NEVER" />
-                <RowConstraints vgrow="NEVER" />
-                <RowConstraints vgrow="NEVER" />
-              </rowConstraints>
+            <VBox spacing="15.0">
                <children>
-                  <ComboBox fx:id="mCustomButtonsCombo" prefWidth="200.0" GridPane.columnIndex="1" />
-                  <Label text="%controls" />
-                  <Label text="%port" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="mControllersCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="mModesCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label text="%mode" GridPane.rowIndex="2" />
+                  <TitledPane collapsible="false" text="%tab_controls.main">
+                     <content>
+                        <GridPane hgap="5.0" vgap="5.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="ALWAYS" />
+                            <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints vgrow="NEVER" />
+                            <RowConstraints vgrow="NEVER" />
+                            <RowConstraints vgrow="NEVER" />
+                          </rowConstraints>
+                           <children>
+                              <ComboBox fx:id="mCustomButtonsCombo" prefWidth="200.0" GridPane.columnIndex="1" />
+                              <Label text="%controls" />
+                              <Label text="%port" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="mControllersCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="mModesCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="%mode" GridPane.rowIndex="2" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </GridPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane collapsible="false" text="%tab_controls.touch">
+                     <content>
+                        <GridPane hgap="5.0" vgap="5.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints vgrow="NEVER" />
+                              <RowConstraints vgrow="NEVER" />
+                              <RowConstraints vgrow="NEVER" />
+                              <RowConstraints vgrow="NEVER" />
+                           </rowConstraints>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <children>
+                              <Label text="%touch.upper.left" />
+                              <Label text="%touch.upper.right" GridPane.rowIndex="1" />
+                              <Label text="%touch.bottom.left" GridPane.rowIndex="2" />
+                              <Label text="%touch.bottom.right" GridPane.rowIndex="3" />
+                              <ComboBox fx:id="mTouchUpperLeftCombo" prefWidth="200.0" GridPane.columnIndex="1" />
+                              <ComboBox fx:id="mTouchUpperRightCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="mTouchBottomLeftCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <ComboBox fx:id="mTouchBottomRightCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                           </children>
+                        </GridPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane collapsible="false" text="%tab_controls.touch.rear">
+                     <content>
+                        <GridPane hgap="5.0" vgap="5.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="ALWAYS" />
+                              <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints vgrow="NEVER" />
+                              <RowConstraints vgrow="NEVER" />
+                              <RowConstraints vgrow="NEVER" />
+                              <RowConstraints vgrow="NEVER" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="%touch.rear.upper.left" />
+                              <ComboBox fx:id="mRearTouchUpperLeftCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+                              <Label text="%touch.rear.upper.right" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="mRearTouchUpperRightCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label text="%touch.rear.bottom.left" GridPane.rowIndex="2" />
+                              <ComboBox fx:id="mRearTouchBottomLeftCombo" prefHeight="26.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="%touch.rear.bottom.right" GridPane.rowIndex="3" />
+                              <ComboBox fx:id="mRearTouchBottomRightCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </GridPane>
+                     </content>
+                  </TitledPane>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
-            </GridPane>
+            </VBox>
          </content>
       </Tab>
       <Tab fx:id="mCustomControlsTab" closable="false" text="%tab_custom_controls">
@@ -105,64 +176,6 @@
                   <ComboBox fx:id="mRStickUpButtonCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="16" />
                   <ComboBox fx:id="mRStickDownButtonCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="17" />
                </children>
-            </GridPane>
-         </content>
-      </Tab>
-      <Tab closable="false" text="%tab_front_touch">
-         <content>
-            <GridPane vgap="5.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints vgrow="NEVER" />
-                <RowConstraints vgrow="NEVER" />
-                <RowConstraints vgrow="NEVER" />
-                  <RowConstraints vgrow="NEVER" />
-              </rowConstraints>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-               <children>
-                  <Label text="%touch.upper.left" />
-                  <Label text="%touch.upper.right" GridPane.rowIndex="1" />
-                  <Label text="%touch.bottom.left" GridPane.rowIndex="2" />
-                  <Label text="%touch.bottom.right" GridPane.rowIndex="3" />
-                  <ComboBox fx:id="mTouchUpperLeftCombo" prefWidth="200.0" GridPane.columnIndex="1" />
-                  <ComboBox fx:id="mTouchUpperRightCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="mTouchBottomLeftCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <ComboBox fx:id="mTouchBottomRightCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-               </children>
-            </GridPane>
-         </content>
-      </Tab>
-      <Tab closable="false" text="%tab_rear_touch">
-         <content>
-            <GridPane vgap="5.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS" />
-                <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints vgrow="NEVER" />
-                <RowConstraints vgrow="NEVER" />
-                <RowConstraints vgrow="NEVER" />
-                  <RowConstraints vgrow="NEVER" />
-              </rowConstraints>
-               <children>
-                  <Label text="%touch.rear.upper.left" />
-                  <ComboBox fx:id="mRearTouchUpperLeftCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-                  <Label text="%touch.rear.upper.right" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="mRearTouchUpperRightCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label text="%touch.rear.bottom.left" GridPane.rowIndex="2" />
-                  <ComboBox fx:id="mRearTouchBottomLeftCombo" prefHeight="26.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label text="%touch.rear.bottom.right" GridPane.rowIndex="3" />
-                  <ComboBox fx:id="mRearTouchBottomRightCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </GridPane>
          </content>
       </Tab>
