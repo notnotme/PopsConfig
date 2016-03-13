@@ -1,10 +1,16 @@
 package com.notnotme.popsconfig.controller;
 
+import com.notnotme.popsconfig.model.SoundVolume;
+import com.notnotme.popsconfig.model.DiscLoading;
 import com.notnotme.popsconfig.model.gamepad.GamePadMapping;
 import com.notnotme.popsconfig.model.gamepad.GamePadMode;
 import com.notnotme.popsconfig.model.gamepad.GamePadPort;
 import com.notnotme.popsconfig.model.gamepad.PsxButton;
+import com.notnotme.popsconfig.model.gamepad.PsxTouchButton;
 import com.notnotme.popsconfig.model.gamepad.VitaButton;
+import com.notnotme.popsconfig.model.gamepad.VitaTouchButton;
+import com.notnotme.popsconfig.model.screen.ScreenFilter;
+import com.notnotme.popsconfig.model.screen.ScreenMode;
 import com.notnotme.popsconfig.ui.factory.ListCellFactory;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,21 +31,26 @@ public class GamePadPaneController implements Initializable {
 
 	private final static String TAG = GamePadPaneController.class.getSimpleName();
 
-	@FXML private Tab mCustomControlsTab;
+	@FXML private Tab mCustomButtonsTab;
+	@FXML private Tab mCustomScreenTab;
 
-	@FXML private ComboBox<GamePadMapping> mCustomButtonsCombo;
+	@FXML private ComboBox<GamePadMapping> mButtonsMappingCombo;
 	@FXML private ComboBox<GamePadPort> mControllersCombo;
-	@FXML private ComboBox<GamePadMode> mModesCombo;
+	@FXML private ComboBox<GamePadMode> mControllerModeCombo;
+	@FXML private ComboBox<ScreenMode> mScreenModeCombo;
+	@FXML private ComboBox<ScreenFilter> mScreenFilterCombo;
+	@FXML private ComboBox<DiscLoading> mDiscLoadingCombo;
+	@FXML private ComboBox<SoundVolume> mAudioBoostCombo;
 
-	@FXML private ComboBox<PsxButton> mTouchUpperLeftCombo;
-	@FXML private ComboBox<PsxButton> mTouchUpperRightCombo;
-	@FXML private ComboBox<PsxButton> mTouchBottomLeftCombo;
-	@FXML private ComboBox<PsxButton> mTouchBottomRightCombo;
+	@FXML private ComboBox<PsxTouchButton> mTouchUpperLeftCombo;
+	@FXML private ComboBox<PsxTouchButton> mTouchUpperRightCombo;
+	@FXML private ComboBox<PsxTouchButton> mTouchBottomLeftCombo;
+	@FXML private ComboBox<PsxTouchButton> mTouchBottomRightCombo;
 
-	@FXML private ComboBox<PsxButton> mRearTouchUpperLeftCombo;
-	@FXML private ComboBox<PsxButton> mRearTouchUpperRightCombo;
-	@FXML private ComboBox<PsxButton> mRearTouchBottomLeftCombo;
-	@FXML private ComboBox<PsxButton> mRearTouchBottomRightCombo;
+	@FXML private ComboBox<PsxTouchButton> mRearTouchUpperLeftCombo;
+	@FXML private ComboBox<PsxTouchButton> mRearTouchUpperRightCombo;
+	@FXML private ComboBox<PsxTouchButton> mRearTouchBottomLeftCombo;
+	@FXML private ComboBox<PsxTouchButton> mRearTouchBottomRightCombo;
 
 	@FXML private ComboBox<PsxButton> mUpButtonCombo;
 	@FXML private ComboBox<PsxButton> mLeftButtonCombo;
@@ -66,23 +77,23 @@ public class GamePadPaneController implements Initializable {
 				Level.INFO, "initialize() location: {0}, resources: {1}",
 				new Object[]{location, resources});
 
-		setupControlsTab(resources);
-		setupCustomControlsTab(resources);
+		setupMainTab(resources);
 		setupTouchPadTab(resources);
 		setupRearTouchPadTab(resources);
+		setupCustomButtonsTab(resources);
 	}
 
-	private void setupControlsTab(ResourceBundle resources) {
+	private void setupMainTab(ResourceBundle resources) {
 		// Set datas for the controls selection (custom/defaut) and handle the values change
 		// - Disable the custom controls option and tab at startup
 		// - Enable the custom controls tab if custom controls is selected if value change
-		mCustomControlsTab.setDisable(true);
-		mCustomButtonsCombo.setCellFactory(ListCellFactory.getControllerControlsCellFactory(resources));
-		mCustomButtonsCombo.setButtonCell(ListCellFactory.getControllerControlsListCell(resources));
-		mCustomButtonsCombo.setItems(FXCollections.observableArrayList(GamePadMapping.values()));
-		mCustomButtonsCombo.setValue(GamePadMapping.DEFAULT);
-		mCustomButtonsCombo.valueProperty().addListener((ObservableValue<? extends GamePadMapping> observable, GamePadMapping oldValue, GamePadMapping newValue) -> {
-			mCustomControlsTab.setDisable(newValue == GamePadMapping.DEFAULT);
+		mCustomButtonsTab.setDisable(true);
+		mButtonsMappingCombo.setCellFactory(ListCellFactory.getControllerControlsCellFactory(resources));
+		mButtonsMappingCombo.setButtonCell(ListCellFactory.getControllerControlsListCell(resources));
+		mButtonsMappingCombo.setItems(FXCollections.observableArrayList(GamePadMapping.values()));
+		mButtonsMappingCombo.setValue(GamePadMapping.DEFAULT);
+		mButtonsMappingCombo.valueProperty().addListener((ObservableValue<? extends GamePadMapping> observable, GamePadMapping oldValue, GamePadMapping newValue) -> {
+			mCustomButtonsTab.setDisable(newValue == GamePadMapping.DEFAULT);
 			GamePadController.getInstance().setControls(newValue);
 		});
 
@@ -98,16 +109,54 @@ public class GamePadPaneController implements Initializable {
 
 		// Set datas for the controllers mode selection (analog/numeric) and handle the values change
 		// - Select numeric by default at startup
-		mModesCombo.setCellFactory(ListCellFactory.getControllerModeCellFactory(resources));
-		mModesCombo.setButtonCell(ListCellFactory.getControllerModeListCell(resources));
-		mModesCombo.setItems(FXCollections.observableArrayList(GamePadMode.values()));
-		mModesCombo.setValue(GamePadMode.NUMERIC);
-		mModesCombo.valueProperty().addListener((ObservableValue<? extends GamePadMode> observable, GamePadMode oldValue, GamePadMode newValue) -> {
+		mControllerModeCombo.setCellFactory(ListCellFactory.getControllerModeCellFactory(resources));
+		mControllerModeCombo.setButtonCell(ListCellFactory.getControllerModeListCell(resources));
+		mControllerModeCombo.setItems(FXCollections.observableArrayList(GamePadMode.values()));
+		mControllerModeCombo.setValue(GamePadMode.NUMERIC);
+		mControllerModeCombo.valueProperty().addListener((ObservableValue<? extends GamePadMode> observable, GamePadMode oldValue, GamePadMode newValue) -> {
 			GamePadController.getInstance().setControllerMode(newValue);
+		});
+
+		// Screen mode
+		mCustomScreenTab.setDisable(true);
+		mScreenModeCombo.setCellFactory(ListCellFactory.getScreenModeCellFactory(resources));
+		mScreenModeCombo.setButtonCell(ListCellFactory.getScreenModeListCell(resources));
+		mScreenModeCombo.setItems(FXCollections.observableArrayList(ScreenMode.values()));
+		mScreenModeCombo.setValue(ScreenMode.ORIGINAL);
+		mScreenModeCombo.valueProperty().addListener((ObservableValue<? extends ScreenMode> observable, ScreenMode oldValue, ScreenMode newValue) -> {
+			mCustomScreenTab.setDisable(newValue != ScreenMode.CUSTOM);
+			// todo: controller interaction
+		});
+
+		// Screen filtering
+		mScreenFilterCombo.setCellFactory(ListCellFactory.getScreenFilterCellFactory(resources));
+		mScreenFilterCombo.setButtonCell(ListCellFactory.getScreenFilterListCell(resources));
+		mScreenFilterCombo.setItems(FXCollections.observableArrayList(ScreenFilter.values()));
+		mScreenFilterCombo.setValue(ScreenFilter.NONE);
+		mScreenFilterCombo.valueProperty().addListener((ObservableValue<? extends ScreenFilter> observable, ScreenFilter oldValue, ScreenFilter newValue) -> {
+			// todo: controller interaction
+		});
+
+		// Disc loading
+		mDiscLoadingCombo.setCellFactory(ListCellFactory.getDiscLoadingCellFactory(resources));
+		mDiscLoadingCombo.setButtonCell(ListCellFactory.getDiscLoadingListCell(resources));
+		mDiscLoadingCombo.setItems(FXCollections.observableArrayList(DiscLoading.values()));
+		mDiscLoadingCombo.setValue(DiscLoading.NORMAL);
+		mDiscLoadingCombo.valueProperty().addListener((ObservableValue<? extends DiscLoading> observable, DiscLoading oldValue, DiscLoading newValue) -> {
+			// todo: controller interaction
+		});
+
+		// Audio boost
+		mAudioBoostCombo.setCellFactory(ListCellFactory.getSoundVolumeCellFactory(resources));
+		mAudioBoostCombo.setButtonCell(ListCellFactory.getSoundVolumeListCell(resources));
+		mAudioBoostCombo.setItems(FXCollections.observableArrayList(SoundVolume.values()));
+		mAudioBoostCombo.setValue(SoundVolume.NORMAL);
+		mAudioBoostCombo.valueProperty().addListener((ObservableValue<? extends SoundVolume> observable, SoundVolume oldValue, SoundVolume newValue) -> {
+			// todo: controller interaction
 		});
 	}
 
-	private void setupCustomControlsTab(ResourceBundle resources) {
+	private void setupCustomButtonsTab(ResourceBundle resources) {
 		ObservableList<PsxButton> buttons = FXCollections.observableArrayList(PsxButton.UNUSED,
 				PsxButton.UP, PsxButton.DOWN, PsxButton.LEFT, PsxButton.RIGHT, PsxButton.START, PsxButton.SELECT,
 				PsxButton.CROSS, PsxButton.SQUARE, PsxButton.CIRCLE, PsxButton.TRIANGLE, PsxButton.L1, PsxButton.L2,
@@ -260,84 +309,95 @@ public class GamePadPaneController implements Initializable {
 	}
 
 	private void setupTouchPadTab(ResourceBundle resources) {
-		ObservableList<PsxButton> buttons = FXCollections.observableArrayList(PsxButton.UNUSED,
-				PsxButton.UP, PsxButton.DOWN, PsxButton.LEFT, PsxButton.RIGHT, PsxButton.START, PsxButton.SELECT,
-				PsxButton.CROSS, PsxButton.SQUARE, PsxButton.CIRCLE, PsxButton.TRIANGLE, PsxButton.L1, PsxButton.L2,
-				PsxButton.L3, PsxButton.R1, PsxButton.R2, PsxButton.R3);
+		ObservableList<PsxTouchButton> buttons = FXCollections.observableArrayList(PsxTouchButton.UNUSED,
+				PsxTouchButton.UP, PsxTouchButton.DOWN, PsxTouchButton.LEFT, PsxTouchButton.RIGHT, PsxTouchButton.START, PsxTouchButton.SELECT,
+				PsxTouchButton.CROSS, PsxTouchButton.SQUARE, PsxTouchButton.CIRCLE, PsxTouchButton.TRIANGLE, PsxTouchButton.L1, PsxTouchButton.L2,
+				PsxTouchButton.L3, PsxTouchButton.R1, PsxTouchButton.R2, PsxTouchButton.R3);
 
-		mTouchUpperLeftCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
-		mTouchUpperLeftCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
+		mTouchUpperLeftCombo.setCellFactory(ListCellFactory.getPsxTouchButtonCellFactory(resources));
+		mTouchUpperLeftCombo.setButtonCell(ListCellFactory.getPsxTouchButtonListCell(resources));
 		mTouchUpperLeftCombo.setItems(buttons);
-		mTouchUpperLeftCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
-			bindButton(VitaButton.TOUCH_UPPER_LEFT, newValue);
+		mTouchUpperLeftCombo.valueProperty().addListener((ObservableValue<? extends PsxTouchButton> observable, PsxTouchButton oldValue, PsxTouchButton newValue) -> {
+			bindButton(VitaTouchButton.TOUCH_UPPER_LEFT, newValue);
 		});
 
-		mTouchUpperRightCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
-		mTouchUpperRightCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
+		mTouchUpperRightCombo.setCellFactory(ListCellFactory.getPsxTouchButtonCellFactory(resources));
+		mTouchUpperRightCombo.setButtonCell(ListCellFactory.getPsxTouchButtonListCell(resources));
 		mTouchUpperRightCombo.setItems(buttons);
-		mTouchUpperRightCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
-			bindButton(VitaButton.TOUCH_UPPER_RIGHT, newValue);
+		mTouchUpperRightCombo.valueProperty().addListener((ObservableValue<? extends PsxTouchButton> observable, PsxTouchButton oldValue, PsxTouchButton newValue) -> {
+			bindButton(VitaTouchButton.TOUCH_UPPER_RIGHT, newValue);
 		});
 
-		mTouchBottomLeftCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
-		mTouchBottomLeftCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
+		mTouchBottomLeftCombo.setCellFactory(ListCellFactory.getPsxTouchButtonCellFactory(resources));
+		mTouchBottomLeftCombo.setButtonCell(ListCellFactory.getPsxTouchButtonListCell(resources));
 		mTouchBottomLeftCombo.setItems(buttons);
-		mTouchBottomLeftCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
-			bindButton(VitaButton.TOUCH_BOTTOM_LEFT, newValue);
+		mTouchBottomLeftCombo.valueProperty().addListener((ObservableValue<? extends PsxTouchButton> observable, PsxTouchButton oldValue, PsxTouchButton newValue) -> {
+			bindButton(VitaTouchButton.TOUCH_BOTTOM_LEFT, newValue);
 		});
 
-		mTouchBottomRightCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
-		mTouchBottomRightCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
+		mTouchBottomRightCombo.setCellFactory(ListCellFactory.getPsxTouchButtonCellFactory(resources));
+		mTouchBottomRightCombo.setButtonCell(ListCellFactory.getPsxTouchButtonListCell(resources));
 		mTouchBottomRightCombo.setItems(buttons);
-		mTouchBottomRightCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
-			bindButton(VitaButton.TOUCH_BOTTOM_RIGHT, newValue);
+		mTouchBottomRightCombo.valueProperty().addListener((ObservableValue<? extends PsxTouchButton> observable, PsxTouchButton oldValue, PsxTouchButton newValue) -> {
+			bindButton(VitaTouchButton.TOUCH_BOTTOM_RIGHT, newValue);
 		});
 
-		mTouchUpperLeftCombo.setValue(PsxButton.UNUSED);
-		mTouchUpperRightCombo.setValue(PsxButton.UNUSED);
-		mTouchBottomLeftCombo.setValue(PsxButton.UNUSED);
-		mTouchBottomRightCombo.setValue(PsxButton.UNUSED);
+		mTouchUpperLeftCombo.setValue(PsxTouchButton.UNUSED);
+		mTouchUpperRightCombo.setValue(PsxTouchButton.UNUSED);
+		mTouchBottomLeftCombo.setValue(PsxTouchButton.UNUSED);
+		mTouchBottomRightCombo.setValue(PsxTouchButton.UNUSED);
 	}
 
 	private void setupRearTouchPadTab(ResourceBundle resources) {
-		ObservableList<PsxButton> rButtons = FXCollections.observableArrayList(PsxButton.UNUSED, PsxButton.R1, PsxButton.R2, PsxButton.R3);
-		ObservableList<PsxButton> lButtons = FXCollections.observableArrayList(PsxButton.UNUSED, PsxButton.L1, PsxButton.L2, PsxButton.L3);
+		ObservableList<PsxTouchButton> rButtons = FXCollections.observableArrayList(PsxTouchButton.UNUSED, PsxTouchButton.R1, PsxTouchButton.R2, PsxTouchButton.R3);
+		ObservableList<PsxTouchButton> lButtons = FXCollections.observableArrayList(PsxTouchButton.UNUSED, PsxTouchButton.L1, PsxTouchButton.L2, PsxTouchButton.L3);
 
-		mRearTouchUpperLeftCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
-		mRearTouchUpperLeftCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
+		mRearTouchUpperLeftCombo.setCellFactory(ListCellFactory.getPsxTouchButtonCellFactory(resources));
+		mRearTouchUpperLeftCombo.setButtonCell(ListCellFactory.getPsxTouchButtonListCell(resources));
 		mRearTouchUpperLeftCombo.setItems(lButtons);
-		mRearTouchUpperLeftCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
-			bindButton(VitaButton.REAR_TOUCH_UPPER_LEFT, newValue);
+		mRearTouchUpperLeftCombo.valueProperty().addListener((ObservableValue<? extends PsxTouchButton> observable, PsxTouchButton oldValue, PsxTouchButton newValue) -> {
+			bindButton(VitaTouchButton.REAR_TOUCH_UPPER_LEFT, newValue);
 		});
 
-		mRearTouchUpperRightCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
-		mRearTouchUpperRightCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
+		mRearTouchUpperRightCombo.setCellFactory(ListCellFactory.getPsxTouchButtonCellFactory(resources));
+		mRearTouchUpperRightCombo.setButtonCell(ListCellFactory.getPsxTouchButtonListCell(resources));
 		mRearTouchUpperRightCombo.setItems(rButtons);
-		mRearTouchBottomRightCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
-			bindButton(VitaButton.REAR_TOUCH_UPPER_RIGHT, newValue);
+		mRearTouchBottomRightCombo.valueProperty().addListener((ObservableValue<? extends PsxTouchButton> observable, PsxTouchButton oldValue, PsxTouchButton newValue) -> {
+			bindButton(VitaTouchButton.REAR_TOUCH_UPPER_RIGHT, newValue);
 		});
 
-		mRearTouchBottomLeftCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
-		mRearTouchBottomLeftCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
+		mRearTouchBottomLeftCombo.setCellFactory(ListCellFactory.getPsxTouchButtonCellFactory(resources));
+		mRearTouchBottomLeftCombo.setButtonCell(ListCellFactory.getPsxTouchButtonListCell(resources));
 		mRearTouchBottomLeftCombo.setItems(lButtons);
-		mRearTouchBottomLeftCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
-			bindButton(VitaButton.REAR_TOUCH_BOTTOM_LEFT, newValue);
+		mRearTouchBottomLeftCombo.valueProperty().addListener((ObservableValue<? extends PsxTouchButton> observable, PsxTouchButton oldValue, PsxTouchButton newValue) -> {
+			bindButton(VitaTouchButton.REAR_TOUCH_BOTTOM_LEFT, newValue);
 		});
 
-		mRearTouchBottomRightCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
-		mRearTouchBottomRightCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
+		mRearTouchBottomRightCombo.setCellFactory(ListCellFactory.getPsxTouchButtonCellFactory(resources));
+		mRearTouchBottomRightCombo.setButtonCell(ListCellFactory.getPsxTouchButtonListCell(resources));
 		mRearTouchBottomRightCombo.setItems(rButtons);
-		mRearTouchBottomRightCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
-			bindButton(VitaButton.REAR_TOUCH_BOTTOM_RIGHT, newValue);
+		mRearTouchBottomRightCombo.valueProperty().addListener((ObservableValue<? extends PsxTouchButton> observable, PsxTouchButton oldValue, PsxTouchButton newValue) -> {
+			bindButton(VitaTouchButton.REAR_TOUCH_BOTTOM_RIGHT, newValue);
 		});
 
-		mRearTouchUpperLeftCombo.setValue(PsxButton.UNUSED);
-		mRearTouchUpperRightCombo.setValue(PsxButton.UNUSED);
-		mRearTouchBottomLeftCombo.setValue(PsxButton.UNUSED);
-		mRearTouchBottomRightCombo.setValue(PsxButton.UNUSED);
+		mRearTouchUpperLeftCombo.setValue(PsxTouchButton.UNUSED);
+		mRearTouchUpperRightCombo.setValue(PsxTouchButton.UNUSED);
+		mRearTouchBottomLeftCombo.setValue(PsxTouchButton.UNUSED);
+		mRearTouchBottomRightCombo.setValue(PsxTouchButton.UNUSED);
 	}
 
 	private void bindButton(VitaButton vitaButton, PsxButton psxButton) {
+		try {
+			GamePadController.getInstance().assign(vitaButton, psxButton);
+		} catch (Exception e) {
+			Logger.getLogger(TAG).log(Level.INFO, null, e);
+			Logger.getLogger(TAG).log(
+				Level.INFO, "Bind button fail: VitaButton: {0}, PsxButton: {1}",
+				new Object[]{vitaButton, psxButton});
+		}
+	}
+
+	private void bindButton(VitaTouchButton vitaButton, PsxTouchButton psxButton) {
 		try {
 			GamePadController.getInstance().assign(vitaButton, psxButton);
 		} catch (Exception e) {

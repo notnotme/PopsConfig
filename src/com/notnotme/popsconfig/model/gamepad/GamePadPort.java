@@ -5,8 +5,8 @@ package com.notnotme.popsconfig.model.gamepad;
  */
 public enum GamePadPort {
 
-	PORT_1("port.pad1"),
-	PORT_2("port.pad2");
+	PORT_1("controls.port.pad1"),
+	PORT_2("controls.port.pad2");
 
 	private final String mName;
 

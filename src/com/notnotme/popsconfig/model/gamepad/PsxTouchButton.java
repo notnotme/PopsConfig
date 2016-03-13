@@ -3,8 +3,9 @@ package com.notnotme.popsconfig.model.gamepad;
 /**
  * @author romain
  */
-public enum PsxButton {
+public enum PsxTouchButton {
 
+	UNUSED("unused"),
 	UP("up"),
 	DOWN("down"),
 	LEFT("left"),
@@ -13,21 +14,18 @@ public enum PsxButton {
 	CIRCLE("circle"),
 	CROSS("cross"),
 	SQUARE("square"),
+	START("start"),
+	SELECT("select"),
 	L1("l1"),
 	R1("r1"),
 	L2("l2"),
 	R2("r2"),
 	L3("l3"),
-	R3("r3"),
-	START("start"),
-	SELECT("select"),
-	UNUSED("unused"),
-	L1_R1("l1_r1"),
-	L2_R2("l2_r2");
+	R3("r3");
 
 	private final String mName;
 
-	private PsxButton(String name) {
+	private PsxTouchButton(String name) {
 		mName = name;
 	}
 

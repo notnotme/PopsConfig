@@ -1,11 +1,13 @@
 package com.notnotme.popsconfig.controller;
 
-import com.notnotme.popsconfig.model.gamepad.PsxButton;
+import com.notnotme.popsconfig.model.gamepad.PsxTouchButton;
 import com.notnotme.popsconfig.model.gamepad.GamePadMapping;
 import com.notnotme.popsconfig.model.gamepad.GamePadMode;
 import com.notnotme.popsconfig.model.gamepad.GamePadPort;
 import com.notnotme.popsconfig.model.gamepad.GamePad;
+import com.notnotme.popsconfig.model.gamepad.PsxButton;
 import com.notnotme.popsconfig.model.gamepad.VitaButton;
+import com.notnotme.popsconfig.model.gamepad.VitaTouchButton;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -106,6 +108,15 @@ public class GamePadController extends GamePad {
 		if (mButtonConfig[vitaButton.ordinal()] == psxButton) return;
 
 		super.assign(vitaButton, psxButton);
+		mSaved = false;
+		invalidateChange();
+	}
+
+	@Override
+	public void assign(VitaTouchButton vitaTouchButton, PsxTouchButton psxTouchButton) throws Exception {
+		if (mTouchConfig[vitaTouchButton.ordinal()] == psxTouchButton) return;
+
+		super.assign(vitaTouchButton, psxTouchButton);
 		mSaved = false;
 		invalidateChange();
 	}

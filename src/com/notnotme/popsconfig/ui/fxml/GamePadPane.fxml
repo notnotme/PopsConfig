@@ -13,37 +13,45 @@
 
 <javafx.scene.control.TabPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.notnotme.popsconfig.controller.GamePadPaneController">
    <tabs>
-      <Tab closable="false" text="%tab_controls">
+      <Tab closable="false" text="%tab_main">
          <content>
-            <VBox spacing="15.0">
+            <VBox spacing="5.0">
                <children>
-                  <TitledPane collapsible="false" text="%tab_controls.main">
-                     <content>
-                        <GridPane hgap="5.0" vgap="5.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="ALWAYS" />
-                            <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints vgrow="NEVER" />
-                            <RowConstraints vgrow="NEVER" />
-                            <RowConstraints vgrow="NEVER" />
-                          </rowConstraints>
-                           <children>
-                              <ComboBox fx:id="mCustomButtonsCombo" prefWidth="200.0" GridPane.columnIndex="1" />
-                              <Label text="%controls" />
-                              <Label text="%port" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="mControllersCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="mModesCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Label text="%mode" GridPane.rowIndex="2" />
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </GridPane>
-                     </content>
-                  </TitledPane>
-                  <TitledPane collapsible="false" text="%tab_controls.touch">
+                  <GridPane hgap="5.0" vgap="5.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints vgrow="NEVER" />
+                     </rowConstraints>
+                     <children>
+                        <ComboBox fx:id="mButtonsMappingCombo" prefWidth="200.0" GridPane.columnIndex="1" />
+                        <Label text="%controls" />
+                        <Label text="%controls.port" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="mControllersCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="mControllerModeCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="%controls.mode" GridPane.rowIndex="2" />
+                        <Label text="%screen.filter" GridPane.rowIndex="4" />
+                        <Label text="%screen.mode" GridPane.rowIndex="3" />
+                        <ComboBox fx:id="mScreenModeCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <ComboBox fx:id="mScreenFilterCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label text="%sound.volume" GridPane.rowIndex="5" />
+                        <Label text="%disc.loading" GridPane.rowIndex="6" />
+                        <ComboBox fx:id="mAudioBoostCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <ComboBox fx:id="mDiscLoadingCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </GridPane>
+                  <TitledPane collapsible="false" text="%tab_main.touch">
                      <content>
                         <GridPane hgap="5.0" vgap="5.0">
                            <columnConstraints>
@@ -72,7 +80,7 @@
                         </GridPane>
                      </content>
                   </TitledPane>
-                  <TitledPane collapsible="false" text="%tab_controls.touch.rear">
+                  <TitledPane collapsible="false" text="%tab_main.touch.rear">
                      <content>
                         <GridPane hgap="5.0" vgap="5.0">
                            <columnConstraints>
@@ -108,7 +116,7 @@
             </VBox>
          </content>
       </Tab>
-      <Tab fx:id="mCustomControlsTab" closable="false" text="%tab_custom_controls">
+      <Tab fx:id="mCustomButtonsTab" closable="false" text="%tab_buttons">
          <content>
             <GridPane vgap="5.0">
               <columnConstraints>
@@ -179,5 +187,6 @@
             </GridPane>
          </content>
       </Tab>
+      <Tab fx:id="mCustomScreenTab" closable="false" text="%tab_screen" />
    </tabs>
 </javafx.scene.control.TabPane>

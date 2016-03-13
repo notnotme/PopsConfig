@@ -10,19 +10,51 @@ import javafx.util.Pair;
 public class GamePad {
 
 	protected final PsxButton mButtonConfig[];
+	protected final PsxTouchButton mTouchConfig[];
+
 	protected GamePadMapping mControls;
 	protected GamePadMode mControllerMode;
 	protected GamePadPort mControllerPort;
 
 	public GamePad() {
+		int count = VitaButton.values().length;
 		mButtonConfig = new PsxButton[VitaButton.values().length];
 		for (VitaButton button : VitaButton.values()) {
 			mButtonConfig[button.ordinal()] = PsxButton.UNUSED;
+		}
+		mTouchConfig = new PsxTouchButton[VitaTouchButton.values().length];
+		for (VitaTouchButton button : VitaTouchButton.values()) {
+			mTouchConfig[button.ordinal()] = PsxTouchButton.UNUSED;
 		}
 
 		mControls = GamePadMapping.DEFAULT;
 		mControllerMode = GamePadMode.NUMERIC;
 		mControllerPort = GamePadPort.PORT_1;
+	}
+
+	public void assign(VitaTouchButton vitaTouchButton, PsxTouchButton psxTouchButton) throws Exception {
+		switch(vitaTouchButton) {
+			case REAR_TOUCH_BOTTOM_LEFT:
+			case REAR_TOUCH_BOTTOM_RIGHT:
+			case REAR_TOUCH_UPPER_LEFT:
+			case REAR_TOUCH_UPPER_RIGHT:
+				switch (psxTouchButton) {
+					case L1:
+					case L2:
+					case L3:
+					case R1:
+					case R2:
+					case R3:
+					case UNUSED:
+						// allowed
+						mTouchConfig[vitaTouchButton.ordinal()] = psxTouchButton;
+						break;
+					default:
+						// disallowed
+						throw new Exception("Cannot assign rear touch with something else that R/L 1,2,3");
+				}
+				break;
+		}
 	}
 
 	/**
@@ -36,47 +68,11 @@ public class GamePad {
 	 * and some other for front touch (all but L1+R1 and L2+R2)
 	 */
 	public void assign(VitaButton vitaButton, PsxButton psxButton) throws Exception {
-		switch(vitaButton) {
-			case TOUCH_BOTTOM_LEFT:
-			case TOUCH_BOTTOM_RIGHT:
-			case TOUCH_UPPER_LEFT:
-			case TOUCH_UPPER_RIGHT:
-				switch(psxButton) {
-					// disallowed
-					case L1_R1:
-					case L2_R2:
-						throw new Exception("Cannot assign front touch with L+R");
-					// allowed
-					default:
-						break;
-				}
-				break;
-			case REAR_TOUCH_BOTTOM_LEFT:
-			case REAR_TOUCH_BOTTOM_RIGHT:
-			case REAR_TOUCH_UPPER_LEFT:
-			case REAR_TOUCH_UPPER_RIGHT:
-				switch (psxButton) {
-					// allowed
-					case L1:
-					case L2:
-					case L3:
-					case R1:
-					case R2:
-					case R3:
-					case UNUSED:
-						break;
-					// disallowed
-					default:
-						throw new Exception("Cannot assign rear touch with something else that R/L 1,2,3");
-				}
-				break;
-		}
-
 		mButtonConfig[vitaButton.ordinal()] = psxButton;
 	}
 
-	public List<Pair<VitaButton, PsxButton>> getButtonsConfig() {
-		ArrayList<Pair<VitaButton, PsxButton>> config = new ArrayList<>();
+	public List<Pair<VitaButton, PsxTouchButton>> getButtonsConfig() {
+		ArrayList<Pair<VitaButton, PsxTouchButton>> config = new ArrayList<>();
 
 		for (VitaButton button : VitaButton.values()) {
 			config.add(new Pair(button, mButtonConfig[button.ordinal()]));

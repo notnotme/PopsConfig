@@ -5,8 +5,8 @@ package com.notnotme.popsconfig.model.gamepad;
  */
 public enum GamePadMode {
 
-	ANALOG("mode.analog"),
-	NUMERIC("mode.numeric");
+	NUMERIC("controls.mode.numeric"),
+	ANALOG("controls.mode.analog");
 
 	private final String mName;
 
