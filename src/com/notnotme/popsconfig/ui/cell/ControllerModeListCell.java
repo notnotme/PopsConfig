@@ -7,7 +7,7 @@ import javafx.scene.control.ListCell;
 /**
  * @author romain
  */
-public class ControllerModeListCell extends ListCell<GamePadMode> {
+public final class ControllerModeListCell extends ListCell<GamePadMode> {
 
 	private final ResourceBundle mResources;
 

@@ -7,7 +7,7 @@ import javafx.scene.control.ListCell;
 /**
  * @author romain
  */
-public class ScreenModeListCell extends ListCell<ScreenMode> {
+public final class ScreenModeListCell extends ListCell<ScreenMode> {
 
 	private final ResourceBundle mResources;
 

@@ -22,7 +22,7 @@ import javafx.stage.WindowEvent;
 /**
  * @author romain
  */
-public class AboutDialogController extends FXMLController {
+public final class AboutDialogController extends FXMLController {
 
 	private final static String TAG = AboutDialogController.class.getSimpleName();
 

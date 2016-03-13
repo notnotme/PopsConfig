@@ -7,7 +7,7 @@ import javafx.scene.control.ListCell;
 /**
  * @author romain
  */
-public class SoundVolumeListCell extends ListCell<SoundVolume> {
+public final class SoundVolumeListCell extends ListCell<SoundVolume> {
 
 	private final ResourceBundle mResources;
 

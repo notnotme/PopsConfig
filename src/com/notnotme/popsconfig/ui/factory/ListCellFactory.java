@@ -26,7 +26,7 @@ import javafx.util.Callback;
 /**
  * @author romain
  */
-public class ListCellFactory {
+public final class ListCellFactory {
 
 	public static PsxButtonListCell getPsxButtonListCell(ResourceBundle resources) {
 		return new PsxButtonListCell(resources);

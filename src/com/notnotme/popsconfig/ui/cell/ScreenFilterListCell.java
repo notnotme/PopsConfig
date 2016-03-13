@@ -7,7 +7,7 @@ import javafx.scene.control.ListCell;
 /**
  * @author romain
  */
-public class ScreenFilterListCell extends ListCell<ScreenFilter> {
+public final class ScreenFilterListCell extends ListCell<ScreenFilter> {
 
 	private final ResourceBundle mResources;
 

@@ -3,12 +3,36 @@ package com.notnotme.popsconfig.model.screen;
 /**
  * @author romain
  */
-public class Screen {
+public final class Screen {
+
+	private ScreenMode mMode;
+	private ScreenFilter mFilter;
 
 	private int mX;
 	private int mY;
 	private int mWidth;
 	private int mHeight;
+
+	public Screen() {
+		mMode = ScreenMode.ORIGINAL;
+		mFilter = ScreenFilter.NONE;
+	}
+
+	public ScreenMode getMode() {
+		return mMode;
+	}
+
+	public void setMode(ScreenMode mMode) {
+		this.mMode = mMode;
+	}
+
+	public ScreenFilter getFilter() {
+		return mFilter;
+	}
+
+	public void setFilter(ScreenFilter mFilter) {
+		this.mFilter = mFilter;
+	}
 
 	public int getX() {
 		return mX;

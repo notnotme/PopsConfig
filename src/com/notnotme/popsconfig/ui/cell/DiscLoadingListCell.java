@@ -7,7 +7,7 @@ import javafx.scene.control.ListCell;
 /**
  * @author romain
  */
-public class DiscLoadingListCell extends ListCell<DiscLoading> {
+public final class DiscLoadingListCell extends ListCell<DiscLoading> {
 
 	private final ResourceBundle mResources;
 

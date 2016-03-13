@@ -27,7 +27,7 @@ import javafx.stage.WindowEvent;
 /**
  * @author romain
  */
-public class MainWindowController extends FXMLController {
+public final class MainWindowController extends FXMLController {
 
 	private final static String TAG = MainWindowController.class.getSimpleName();
 
@@ -41,9 +41,9 @@ public class MainWindowController extends FXMLController {
 	@FXML private Label mStatusLabel;
 
 	/**
-	 * A OnPadChangeListener that update the status bar when the GamePad model is saved or modified.
+	 * A OnChangeListener that update the status bar when the GamePad model is saved or modified.
 	 */
-	private final GamePadController.OnPadChangeListener mOnPadChangeListener = new GamePadController.OnPadChangeListener() {
+	private final ConfigController.OnChangeListener mOnPadChangeListener = new ConfigController.OnChangeListener() {
 		@Override
 		public void onChanged() {
 			mStatusLabel.setText(mResources.getString("unsaved"));
@@ -124,7 +124,7 @@ public class MainWindowController extends FXMLController {
 	private void saveConfig() {
 		File file = mFileChooser.showSaveDialog(mStage);
 		if (file != null) {
-			GamePadController.getInstance().savePad(file);
+			ConfigController.getInstance().saveConfig(file);
 		}
 	}
 
@@ -149,7 +149,7 @@ public class MainWindowController extends FXMLController {
 	 * Called when the window is initialy shown
 	 */
 	private void onEnter() {
-		GamePadController.getInstance().addListener(mOnPadChangeListener);
+		ConfigController.getInstance().addListener(mOnPadChangeListener);
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class MainWindowController extends FXMLController {
 	 * Ask for save change if needed
 	 */
 	private void onExit() {
-		GamePadController controller = GamePadController.getInstance();
+		ConfigController controller = ConfigController.getInstance();
 		if (!controller.isSaved() && !mFirstConfig) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle(mResources.getString("warning"));
@@ -168,7 +168,7 @@ public class MainWindowController extends FXMLController {
 				saveConfig();
 			}
 		}
-		GamePadController.getInstance().removeListener(mOnPadChangeListener);
+		ConfigController.getInstance().removeListener(mOnPadChangeListener);
 	}
 
 }

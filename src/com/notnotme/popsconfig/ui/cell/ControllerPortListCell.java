@@ -7,7 +7,7 @@ import javafx.scene.control.ListCell;
 /**
  * @author romain
  */
-public class ControllerPortListCell extends ListCell<GamePadPort> {
+public final class ControllerPortListCell extends ListCell<GamePadPort> {
 
 	private final ResourceBundle mResources;
 

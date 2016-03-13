@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 /**
  * @author romain
  */
-public class PopsConfig extends Application {
+public final class PopsConfig extends Application {
 
 	private final static String TAG = PopsConfig.class.getSimpleName();
 

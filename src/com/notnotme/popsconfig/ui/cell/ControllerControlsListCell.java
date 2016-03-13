@@ -7,7 +7,7 @@ import javafx.scene.control.ListCell;
 /**
  * @author romain
  */
-public class ControllerControlsListCell extends ListCell<GamePadMapping> {
+public final class ControllerControlsListCell extends ListCell<GamePadMapping> {
 
 	private final ResourceBundle mResources;
 

@@ -14,7 +14,7 @@ import javafx.util.Callback;
  * The controllers usually need a reference to their Stage and other things
  * so this factory is used to give those ojects to the controller constructors
  */
-public class ControllerFactory implements Callback<Class<?>,Object> {
+public final class ControllerFactory implements Callback<Class<?>,Object> {
 
 	private final Stage mStage;
 	private final HostServices mHostServices;

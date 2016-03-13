@@ -44,7 +44,7 @@ import org.muforge.musound.muxm.ModuleEngine;
  *
  * @author Martin Cameron
  */
-public class ModulePlayer implements Runnable {
+public final class ModulePlayer implements Runnable {
 
 	private final static String TAG = ModulePlayer.class.getSimpleName();
     private final int SAMPLE_RATE = 44100;

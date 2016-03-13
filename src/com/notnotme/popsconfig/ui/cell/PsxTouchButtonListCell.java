@@ -7,7 +7,7 @@ import javafx.scene.control.ListCell;
 /**
  * @author romain
  */
-public class PsxTouchButtonListCell extends ListCell<PsxTouchButton> {
+public final class PsxTouchButtonListCell extends ListCell<PsxTouchButton> {
 
 	private final ResourceBundle mResources;
 

@@ -7,7 +7,7 @@ import javafx.scene.control.ListCell;
 /**
  * @author romain
  */
-public class VitaTouchButtonListCell extends ListCell<VitaTouchButton> {
+public final class VitaTouchButtonListCell extends ListCell<VitaTouchButton> {
 
 	private final ResourceBundle mResources;
 
