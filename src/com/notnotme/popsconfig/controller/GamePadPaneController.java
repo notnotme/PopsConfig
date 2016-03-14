@@ -26,7 +26,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
-import javafx.scene.paint.Paint;
 
 /**
  * @author romain

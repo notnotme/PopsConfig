@@ -5,8 +5,8 @@ package com.notnotme.popsconfig.model.gamepad;
  */
 public final class GamePad {
 
-	protected final PsxButton mButtonConfig[];
-	protected final PsxTouchButton mTouchConfig[];
+	protected PsxButton mButtonConfig[];
+	protected PsxTouchButton mTouchConfig[];
 
 	protected GamePadMapping mGamePadMapping;
 	protected GamePadMode mControllerMode;
