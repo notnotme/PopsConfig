@@ -86,7 +86,9 @@ public final class ConfigController {
 		bb.putInt(CONFIG_MAGIC_1); // header
 		bb.putInt(CONFIG_MAGIC_2); // header
 		bb.putInt(CONFIG_VERSION); // header
+
 		bb.putInt(0); // unk (?) disc number?
+
 		bb.putInt(mDiscLoading.ordinal()); // disc
 		bb.putInt(mSoundVolume.ordinal()); // volume
 		bb.putInt(mGamePad.getPort().ordinal()); // gamepad port
@@ -112,6 +114,8 @@ public final class ConfigController {
 		// Save __sce_menuinfo buffer into a file
 		try (FileOutputStream os = new FileOutputStream(file)) {
 			os.write(bb.array());
+			os.flush();
+			os.close();
 		}
 
 		mSaved = true;
@@ -133,6 +137,8 @@ public final class ConfigController {
 			is.read(content);
 			bb.put(content);
 			bb.position(0);
+
+			is.close();
 		}
 
 		// Write __sce_menuinfo struct into a buffer
@@ -153,9 +159,13 @@ public final class ConfigController {
 		mGamePad.setMapping(GamePadMapping.values()[bb.getShort()]);
 		mScreen.setFilter(ScreenFilter.values()[bb.getInt()]);
 		mScreen.setMode(ScreenMode.values()[bb.getInt()]);
-		mScreen.setCustomSize(new Rectangle(
-				bb.getInt(), bb.getInt(),
-				bb.getInt(), bb.getInt()));
+
+		Rectangle screen = new Rectangle();
+		screen.x = bb.getInt(); // screen X
+		screen.y = bb.getInt(); // screen Y
+		screen.width = bb.getInt(); // screen W
+		screen.height = bb.getInt(); // screen H
+		mScreen.setCustomSize(screen);
 
 		// game pad custom keys & touch
 		PsxButton buttons[] = PsxButton.values();
