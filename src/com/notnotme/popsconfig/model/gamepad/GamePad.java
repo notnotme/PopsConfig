@@ -13,7 +13,6 @@ public final class GamePad {
 	protected GamePadPort mControllerPort;
 
 	public GamePad() {
-		int count = VitaButton.values().length;
 		mButtonConfig = new PsxButton[VitaButton.values().length];
 		mTouchConfig = new PsxTouchButton[VitaTouchButton.values().length];
 

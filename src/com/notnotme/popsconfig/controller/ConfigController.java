@@ -13,7 +13,11 @@ import com.notnotme.popsconfig.model.gamepad.VitaTouchButton;
 import com.notnotme.popsconfig.model.screen.Screen;
 import com.notnotme.popsconfig.model.screen.ScreenFilter;
 import com.notnotme.popsconfig.model.screen.ScreenMode;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,15 +25,18 @@ import java.util.logging.Logger;
 /**
  * @author romain
  *
- * Extends GamePad and use the Singleton pattern to make it available
+ * Use the Singleton pattern to make it available
  * trougth all the application.
  *
  * You can register a OnChangeListener to be notified each time
- * a data is changed inside the GamePad model.
+ * a data is changed inside the internal datas
  */
 public final class ConfigController {
 
 	private final static String TAG = ConfigController.class.getSimpleName();
+	private final static int CONFIG_MAGIC_1 = 0x53504F50;
+	private final static int CONFIG_MAGIC_2 = 0x4746432E;
+	private final static int CONFIG_VERSION = 5;
 
 	private static ConfigController sINSTANCE;
 	public static ConfigController getInstance() {
@@ -66,12 +73,41 @@ public final class ConfigController {
 		mSoundVolume = SoundVolume.NORMAL;
 	}
 
-	public void saveConfig(File file) {
+	public void saveConfig(File file) throws Exception {
 		Logger.getLogger(TAG).log(
 				Level.INFO, "saveConfig() file: {0}",
 				new Object[]{file.getPath()});
 
-		// TODO: Write in database or file...
+		// Write __sce_menuinfo struct into a buffer
+		ByteBuffer bb = ByteBuffer.allocate(1024);
+		bb.order(ByteOrder.LITTLE_ENDIAN);
+		bb.putInt(CONFIG_MAGIC_1); // header
+		bb.putInt(CONFIG_MAGIC_2); // header
+		bb.putInt(CONFIG_VERSION); // header
+		bb.putInt(0); // unk (?)
+		bb.putInt(mDiscLoading.ordinal()); // disc
+		bb.putInt(mSoundVolume.ordinal()); // volume
+		bb.putInt(mGamePad.getPort().ordinal()); // gamepad port
+		bb.putShort((short) mGamePad.getMode().ordinal()); // gamepad mode
+		bb.putShort((short) mGamePad.getMapping().ordinal()); // gamepad mapping
+		bb.putInt(mScreen.getFilter().ordinal()); // screen filter
+		bb.putInt(mScreen.getMode().ordinal()); // screenmode
+		bb.putInt(mScreen.getX()); // screen X
+		bb.putInt(mScreen.getY()); // screen Y
+		bb.putInt(mScreen.getWidth()); // screen W
+		bb.putInt(mScreen.getHeight()); // screen H
+		// game pad custom keys & touch
+		for (VitaButton button : VitaButton.values()) {
+			bb.putInt(get(button).ordinal());
+		}
+		for (VitaTouchButton button : VitaTouchButton.values()) {
+			bb.putInt(get(button).ordinal());
+		}
+
+		// Save __sce_menuinfo buffer into a file
+		try (FileOutputStream os = new FileOutputStream(file)) {
+			os.write(bb.array());
+		}
 
 		mSaved = true;
 		mChangeListeners.stream().forEach((onChangeListener) -> {

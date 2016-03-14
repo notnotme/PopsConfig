@@ -117,14 +117,24 @@ public final class MainWindowController extends FXMLController {
 		// prepare other data that is not shown at startup
 		mFirstConfig = true;
 		mFileChooser = new FileChooser();
+		mFileChooser.setInitialFileName("__sce_menuinfo");
 		mFileChooser.getExtensionFilters().add(
-			new FileChooser.ExtensionFilter("IN WHAT FORMAT I SAVE ? DB OR FILE ???", "*.wtf"));
+			new FileChooser.ExtensionFilter("Pops Configuration", "*"));
 	}
 
 	private void saveConfig() {
 		File file = mFileChooser.showSaveDialog(mStage);
 		if (file != null) {
-			ConfigController.getInstance().saveConfig(file);
+			try {
+				ConfigController.getInstance().saveConfig(file);
+			} catch (Exception ex) {
+				Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle(mResources.getString("error"));
+				alert.setHeaderText(mResources.getString("error_saving_title"));
+				alert.setContentText(ex.getLocalizedMessage());
+				alert.showAndWait();
+			}
 		}
 	}
 
