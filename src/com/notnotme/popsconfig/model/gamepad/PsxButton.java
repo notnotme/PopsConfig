@@ -19,8 +19,8 @@ public enum PsxButton {
 	R2("r2"),
 	L3("l3"),
 	R3("r3"),
-	START("start"),
 	SELECT("select"),
+	START("start"),
 	UNUSED("unused"),
 	L1_R1("l1_r1"),
 	L2_R2("l2_r2");

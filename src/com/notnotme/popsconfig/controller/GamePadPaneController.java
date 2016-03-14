@@ -26,6 +26,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
+import javafx.scene.paint.Paint;
 
 /**
  * @author romain
@@ -79,6 +80,24 @@ public final class GamePadPaneController implements Initializable {
 	@FXML private Spinner<Integer> mCustomScreenWidthSprinner;
 	@FXML private Spinner<Integer> mCustomScreenHeightSprinner;
 
+		/**
+	 * A OnChangeListener that update the status bar when the GamePad model is saved or modified.
+	 */
+	private final ConfigController.OnChangeListener mOnChangeListener = new ConfigController.OnChangeListener() {
+		@Override
+		public void onChanged() {
+		}
+
+		@Override
+		public void onSaved() {
+		}
+
+		@Override
+		public void onLoaded() {
+			refreshDatas();
+		}
+	};
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Logger.getLogger(TAG).log(
@@ -90,6 +109,9 @@ public final class GamePadPaneController implements Initializable {
 		setupRearTouchPadTab(resources);
 		setupCustomButtonsTab(resources);
 		setupCustomScreenTab(resources);
+		refreshDatas();
+
+		ConfigController.getInstance().addListener(mOnChangeListener);
 	}
 
 	private void setupMainTab(ResourceBundle resources) {
@@ -101,7 +123,6 @@ public final class GamePadPaneController implements Initializable {
 		mButtonsMappingCombo.setCellFactory(ListCellFactory.getControllerControlsCellFactory(resources));
 		mButtonsMappingCombo.setButtonCell(ListCellFactory.getControllerControlsListCell(resources));
 		mButtonsMappingCombo.setItems(FXCollections.observableArrayList(GamePadMapping.values()));
-		mButtonsMappingCombo.setValue(controller.getGamePadMapping());
 		mButtonsMappingCombo.valueProperty().addListener((ObservableValue<? extends GamePadMapping> observable, GamePadMapping oldValue, GamePadMapping newValue) -> {
 			mCustomButtonsTab.setDisable(newValue == GamePadMapping.DEFAULT);
 			controller.setGamePadMapping(newValue);
@@ -113,7 +134,6 @@ public final class GamePadPaneController implements Initializable {
 		mControllersCombo.setCellFactory(ListCellFactory.getControllerPortCellFactory(resources));
 		mControllersCombo.setButtonCell(ListCellFactory.getControllerPortListCell(resources));
 		mControllersCombo.setItems(FXCollections.observableArrayList(GamePadPort.values()));
-		mControllersCombo.setValue(controller.getGamePadPort());
 		mControllersCombo.valueProperty().addListener((ObservableValue<? extends GamePadPort> observable, GamePadPort oldValue, GamePadPort newValue) -> {
 			controller.setGamePadPort(newValue);
 		});
@@ -123,7 +143,6 @@ public final class GamePadPaneController implements Initializable {
 		mControllerModeCombo.setCellFactory(ListCellFactory.getControllerModeCellFactory(resources));
 		mControllerModeCombo.setButtonCell(ListCellFactory.getControllerModeListCell(resources));
 		mControllerModeCombo.setItems(FXCollections.observableArrayList(GamePadMode.values()));
-		mControllerModeCombo.setValue(controller.getGamePadMode());
 		mControllerModeCombo.valueProperty().addListener((ObservableValue<? extends GamePadMode> observable, GamePadMode oldValue, GamePadMode newValue) -> {
 			controller.setGamePadMode(newValue);
 		});
@@ -132,7 +151,6 @@ public final class GamePadPaneController implements Initializable {
 		mScreenModeCombo.setCellFactory(ListCellFactory.getScreenModeCellFactory(resources));
 		mScreenModeCombo.setButtonCell(ListCellFactory.getScreenModeListCell(resources));
 		mScreenModeCombo.setItems(FXCollections.observableArrayList(ScreenMode.values()));
-		mScreenModeCombo.setValue(controller.getScreenMode());
 		mScreenModeCombo.valueProperty().addListener((ObservableValue<? extends ScreenMode> observable, ScreenMode oldValue, ScreenMode newValue) -> {
 			mCustomScreenTab.setDisable(newValue != ScreenMode.CUSTOM);
 			controller.setScreenMode(newValue);
@@ -143,7 +161,6 @@ public final class GamePadPaneController implements Initializable {
 		mScreenFilterCombo.setCellFactory(ListCellFactory.getScreenFilterCellFactory(resources));
 		mScreenFilterCombo.setButtonCell(ListCellFactory.getScreenFilterListCell(resources));
 		mScreenFilterCombo.setItems(FXCollections.observableArrayList(ScreenFilter.values()));
-		mScreenFilterCombo.setValue(controller.getScreenFilter());
 		mScreenFilterCombo.valueProperty().addListener((ObservableValue<? extends ScreenFilter> observable, ScreenFilter oldValue, ScreenFilter newValue) -> {
 			controller.setScreenFilter(newValue);
 		});
@@ -152,7 +169,6 @@ public final class GamePadPaneController implements Initializable {
 		mDiscLoadingCombo.setCellFactory(ListCellFactory.getDiscLoadingCellFactory(resources));
 		mDiscLoadingCombo.setButtonCell(ListCellFactory.getDiscLoadingListCell(resources));
 		mDiscLoadingCombo.setItems(FXCollections.observableArrayList(DiscLoading.values()));
-		mDiscLoadingCombo.setValue(controller.getDiscLoading());
 		mDiscLoadingCombo.valueProperty().addListener((ObservableValue<? extends DiscLoading> observable, DiscLoading oldValue, DiscLoading newValue) -> {
 			controller.setDiscLoading(newValue);
 		});
@@ -161,7 +177,6 @@ public final class GamePadPaneController implements Initializable {
 		mAudioBoostCombo.setCellFactory(ListCellFactory.getSoundVolumeCellFactory(resources));
 		mAudioBoostCombo.setButtonCell(ListCellFactory.getSoundVolumeListCell(resources));
 		mAudioBoostCombo.setItems(FXCollections.observableArrayList(SoundVolume.values()));
-		mAudioBoostCombo.setValue(controller.getSoundVolume());
 		mAudioBoostCombo.valueProperty().addListener((ObservableValue<? extends SoundVolume> observable, SoundVolume oldValue, SoundVolume newValue) -> {
 			controller.setSoundVolume(newValue);
 		});
@@ -298,26 +313,6 @@ public final class GamePadPaneController implements Initializable {
 		mRStickDownButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
 			bindButton(VitaButton.RIGHT_ANALOG_DOWN, newValue);
 		});
-
-		ConfigController controller = ConfigController.getInstance();
-		mUpButtonCombo.setValue(controller.get(VitaButton.UP));
-		mLeftButtonCombo.setValue(controller.get(VitaButton.LEFT));
-		mRightButtonCombo.setValue(controller.get(VitaButton.RIGHT));
-		mDownButtonCombo.setValue(controller.get(VitaButton.DOWN));
-		mLButtonCombo.setValue(controller.get(VitaButton.L));
-		mRButtonCombo.setValue(controller.get(VitaButton.R));
-		mSquareButtonCombo.setValue(controller.get(VitaButton.SQUARE));
-		mCrossButtonCombo.setValue(controller.get(VitaButton.CROSS));
-		mCircleButtonCombo.setValue(controller.get(VitaButton.CIRCLE));
-		mTriangleButtonCombo.setValue(controller.get(VitaButton.TRIANGLE));
-		mLStickLeftButtonCombo.setValue(controller.get(VitaButton.LEFT_ANALOG_LEFT));
-		mLStickRightButtonCombo.setValue(controller.get(VitaButton.LEFT_LANALOG_RIGHT));
-		mLStickUpButtonCombo.setValue(controller.get(VitaButton.LEFT_ANALOG_UP));
-		mLStickDownButtonCombo.setValue(controller.get(VitaButton.LEFT_ANALOG_DOWN));
-		mRStickLeftButtonCombo.setValue(controller.get(VitaButton.RIGHT_ANALOG_LEFT));
-		mRStickRightButtonCombo.setValue(controller.get(VitaButton.RIGHT_ANALOG_RIGHT));
-		mRStickUpButtonCombo.setValue(controller.get(VitaButton.RIGHT_ANALOG_UP));
-		mRStickDownButtonCombo.setValue(controller.get(VitaButton.RIGHT_ANALOG_DOWN));
 	}
 
 	private void setupTouchPadTab(ResourceBundle resources) {
@@ -353,12 +348,6 @@ public final class GamePadPaneController implements Initializable {
 		mTouchBottomRightCombo.valueProperty().addListener((ObservableValue<? extends PsxTouchButton> observable, PsxTouchButton oldValue, PsxTouchButton newValue) -> {
 			bindButton(VitaTouchButton.TOUCH_BOTTOM_RIGHT, newValue);
 		});
-
-		ConfigController controller = ConfigController.getInstance();
-		mTouchUpperLeftCombo.setValue(controller.get(VitaTouchButton.TOUCH_UPPER_LEFT));
-		mTouchUpperRightCombo.setValue(controller.get(VitaTouchButton.TOUCH_UPPER_RIGHT));
-		mTouchBottomLeftCombo.setValue(controller.get(VitaTouchButton.TOUCH_BOTTOM_LEFT));
-		mTouchBottomRightCombo.setValue(controller.get(VitaTouchButton.TOUCH_BOTTOM_RIGHT));
 	}
 
 	private void setupRearTouchPadTab(ResourceBundle resources) {
@@ -392,12 +381,6 @@ public final class GamePadPaneController implements Initializable {
 		mRearTouchBottomRightCombo.valueProperty().addListener((ObservableValue<? extends PsxTouchButton> observable, PsxTouchButton oldValue, PsxTouchButton newValue) -> {
 			bindButton(VitaTouchButton.REAR_TOUCH_BOTTOM_RIGHT, newValue);
 		});
-
-		ConfigController controller = ConfigController.getInstance();
-		mRearTouchUpperLeftCombo.setValue(controller.get(VitaTouchButton.REAR_TOUCH_UPPER_LEFT));
-		mRearTouchUpperRightCombo.setValue(controller.get(VitaTouchButton.REAR_TOUCH_UPPER_RIGHT));
-		mRearTouchBottomLeftCombo.setValue(controller.get(VitaTouchButton.REAR_TOUCH_BOTTOM_LEFT));
-		mRearTouchBottomRightCombo.setValue(controller.get(VitaTouchButton.REAR_TOUCH_BOTTOM_RIGHT));
 	}
 
 	private void setupCustomScreenTab(ResourceBundle resources) {
@@ -430,6 +413,53 @@ public final class GamePadPaneController implements Initializable {
 			rect.height = newValue;
 			controller.setScreenSize(rect);
 		});
+	}
+
+	private void refreshDatas() {
+		ConfigController controller = ConfigController.getInstance();
+
+		mControllersCombo.setValue(controller.getGamePadPort());
+		mButtonsMappingCombo.setValue(controller.getGamePadMapping());
+		mControllerModeCombo.setValue(controller.getGamePadMode());
+		mScreenModeCombo.setValue(controller.getScreenMode());
+		mScreenFilterCombo.setValue(controller.getScreenFilter());
+		mDiscLoadingCombo.setValue(controller.getDiscLoading());
+		mAudioBoostCombo.setValue(controller.getSoundVolume());
+
+		mUpButtonCombo.setValue(controller.get(VitaButton.UP));
+		mLeftButtonCombo.setValue(controller.get(VitaButton.LEFT));
+		mRightButtonCombo.setValue(controller.get(VitaButton.RIGHT));
+		mDownButtonCombo.setValue(controller.get(VitaButton.DOWN));
+		mLButtonCombo.setValue(controller.get(VitaButton.L));
+		mRButtonCombo.setValue(controller.get(VitaButton.R));
+		mSquareButtonCombo.setValue(controller.get(VitaButton.SQUARE));
+		mCrossButtonCombo.setValue(controller.get(VitaButton.CROSS));
+		mCircleButtonCombo.setValue(controller.get(VitaButton.CIRCLE));
+		mTriangleButtonCombo.setValue(controller.get(VitaButton.TRIANGLE));
+		mLStickLeftButtonCombo.setValue(controller.get(VitaButton.LEFT_ANALOG_LEFT));
+		mLStickRightButtonCombo.setValue(controller.get(VitaButton.LEFT_LANALOG_RIGHT));
+		mLStickUpButtonCombo.setValue(controller.get(VitaButton.LEFT_ANALOG_UP));
+		mLStickDownButtonCombo.setValue(controller.get(VitaButton.LEFT_ANALOG_DOWN));
+		mRStickLeftButtonCombo.setValue(controller.get(VitaButton.RIGHT_ANALOG_LEFT));
+		mRStickRightButtonCombo.setValue(controller.get(VitaButton.RIGHT_ANALOG_RIGHT));
+		mRStickUpButtonCombo.setValue(controller.get(VitaButton.RIGHT_ANALOG_UP));
+		mRStickDownButtonCombo.setValue(controller.get(VitaButton.RIGHT_ANALOG_DOWN));
+
+		mTouchUpperLeftCombo.setValue(controller.get(VitaTouchButton.TOUCH_UPPER_LEFT));
+		mTouchUpperRightCombo.setValue(controller.get(VitaTouchButton.TOUCH_UPPER_RIGHT));
+		mTouchBottomLeftCombo.setValue(controller.get(VitaTouchButton.TOUCH_BOTTOM_LEFT));
+		mTouchBottomRightCombo.setValue(controller.get(VitaTouchButton.TOUCH_BOTTOM_RIGHT));
+
+		mRearTouchUpperLeftCombo.setValue(controller.get(VitaTouchButton.REAR_TOUCH_UPPER_LEFT));
+		mRearTouchUpperRightCombo.setValue(controller.get(VitaTouchButton.REAR_TOUCH_UPPER_RIGHT));
+		mRearTouchBottomLeftCombo.setValue(controller.get(VitaTouchButton.REAR_TOUCH_BOTTOM_LEFT));
+		mRearTouchBottomRightCombo.setValue(controller.get(VitaTouchButton.REAR_TOUCH_BOTTOM_RIGHT));
+
+		Rectangle screen = controller.getScreenSize();
+		mCustomScreenXSprinner.getValueFactory().setValue(screen.x);
+		mCustomScreenYSprinner.getValueFactory().setValue(screen.y);
+		mCustomScreenWidthSprinner.getValueFactory().setValue(screen.width);
+		mCustomScreenHeightSprinner.getValueFactory().setValue(screen.height);
 	}
 
 	private void bindButton(VitaButton vitaButton, PsxButton psxButton) {

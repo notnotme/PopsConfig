@@ -69,8 +69,6 @@ public final class GamePad {
 					case R2:
 					case R3:
 					case UNUSED:
-						// allowed
-						mTouchConfig[vitaTouchButton.ordinal()] = psxTouchButton;
 						break;
 					default:
 						// disallowed
@@ -78,6 +76,7 @@ public final class GamePad {
 				}
 				break;
 		}
+		mTouchConfig[vitaTouchButton.ordinal()] = psxTouchButton;
 	}
 
 	/**

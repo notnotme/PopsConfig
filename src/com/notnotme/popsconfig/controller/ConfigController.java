@@ -15,6 +15,7 @@ import com.notnotme.popsconfig.model.screen.ScreenFilter;
 import com.notnotme.popsconfig.model.screen.ScreenMode;
 import com.sun.javafx.geom.Rectangle;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -36,7 +37,7 @@ public final class ConfigController {
 	private final static String TAG = ConfigController.class.getSimpleName();
 	private final static int CONFIG_MAGIC_1 = 0x53504F50;
 	private final static int CONFIG_MAGIC_2 = 0x4746432E;
-	private final static int CONFIG_VERSION = 5;
+	private final static int CONFIG_VERSION = 0x00000005;
 
 	private static ConfigController sINSTANCE;
 	public static ConfigController getInstance() {
@@ -53,6 +54,7 @@ public final class ConfigController {
 	public interface OnChangeListener {
 		void onChanged();
 		void onSaved();
+		void onLoaded();
 	}
 
 	private final ArrayList<OnChangeListener> mChangeListeners;
@@ -101,10 +103,10 @@ public final class ConfigController {
 
 		// game pad custom keys & touch
 		for (VitaButton button : VitaButton.values()) {
-			bb.putInt(get(button).ordinal());
+			bb.put((byte) get(button).ordinal());
 		}
 		for (VitaTouchButton button : VitaTouchButton.values()) {
-			bb.putInt(get(button).ordinal());
+			bb.put((byte) get(button).ordinal());
 		}
 
 		// Save __sce_menuinfo buffer into a file
@@ -115,6 +117,59 @@ public final class ConfigController {
 		mSaved = true;
 		mChangeListeners.stream().forEach((onChangeListener) -> {
 			onChangeListener.onSaved();
+		});
+	}
+
+	public void loadConfig(File file) throws Exception {
+		Logger.getLogger(TAG).log(
+				Level.INFO, "loadConfig() file: {0}",
+				new Object[]{file.getPath()});
+
+		// load __sce_menuinfo buffer into a buffer
+		ByteBuffer bb = ByteBuffer.allocate(1024);
+		bb.order(ByteOrder.LITTLE_ENDIAN);
+		try (FileInputStream is = new FileInputStream(file)) {
+			byte content[] = new byte[1024];
+			is.read(content);
+			bb.put(content);
+			bb.position(0);
+		}
+
+		// Write __sce_menuinfo struct into a buffer
+		if(bb.getInt() != CONFIG_MAGIC_1 || bb.getInt() != CONFIG_MAGIC_2) {
+			throw new Exception("Not a Pops __sce_menuinfo file");
+		}
+
+		if (bb.getInt() != CONFIG_VERSION) {
+			throw new Exception("Version mismatch");
+		}
+
+		bb.getInt(); // unk (?) disc number?
+
+		mDiscLoading = DiscLoading.values()[bb.getInt()];
+		mSoundVolume = SoundVolume.values()[bb.getInt()];
+		mGamePad.setPort(GamePadPort.values()[bb.getInt()]);
+		mGamePad.setMode(GamePadMode.values()[bb.getShort()]);
+		mGamePad.setMapping(GamePadMapping.values()[bb.getShort()]);
+		mScreen.setFilter(ScreenFilter.values()[bb.getInt()]);
+		mScreen.setMode(ScreenMode.values()[bb.getInt()]);
+		mScreen.setCustomSize(new Rectangle(
+				bb.getInt(), bb.getInt(),
+				bb.getInt(), bb.getInt()));
+
+		// game pad custom keys & touch
+		PsxButton buttons[] = PsxButton.values();
+		for (VitaButton button : VitaButton.values()) {
+			mGamePad.assign(button, buttons[bb.get()]);
+		}
+		PsxTouchButton touchButtons[] = PsxTouchButton.values();
+		for (VitaTouchButton button : VitaTouchButton.values()) {
+			mGamePad.assign(button, touchButtons[bb.get()]);
+		}
+
+		mSaved = true;
+		mChangeListeners.stream().forEach((onChangeListener) -> {
+			onChangeListener.onLoaded();
 		});
 	}
 

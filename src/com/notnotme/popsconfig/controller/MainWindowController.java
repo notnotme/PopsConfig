@@ -38,12 +38,13 @@ public final class MainWindowController extends FXMLController {
 	@FXML private MenuItem mItemSave;
 	@FXML private MenuItem mItemClose;
 	@FXML private MenuItem mItemAbout;
+	@FXML private MenuItem mItemLoad;
 	@FXML private Label mStatusLabel;
 
 	/**
 	 * A OnChangeListener that update the status bar when the GamePad model is saved or modified.
 	 */
-	private final ConfigController.OnChangeListener mOnPadChangeListener = new ConfigController.OnChangeListener() {
+	private final ConfigController.OnChangeListener mOnChangeListener = new ConfigController.OnChangeListener() {
 		@Override
 		public void onChanged() {
 			mStatusLabel.setText(mResources.getString("unsaved"));
@@ -53,6 +54,12 @@ public final class MainWindowController extends FXMLController {
 
 		@Override
 		public void onSaved() {
+			mStatusLabel.setText(mResources.getString("ready"));
+			mStatusLabel.setTextFill(Paint.valueOf("green"));
+		}
+
+		@Override
+		public void onLoaded() {
 			mStatusLabel.setText(mResources.getString("ready"));
 			mStatusLabel.setTextFill(Paint.valueOf("green"));
 		}
@@ -83,6 +90,10 @@ public final class MainWindowController extends FXMLController {
 		}
 
 		// Set up the menu items actions
+		mItemLoad.setOnAction((ActionEvent event) -> {
+			loadConfig();
+		});
+
 		mItemSave.setOnAction((ActionEvent event) -> {
 			saveConfig();
 		});
@@ -111,7 +122,7 @@ public final class MainWindowController extends FXMLController {
 		});
 
 		// Application is ready so show it
-		mOnPadChangeListener.onSaved();
+		mOnChangeListener.onLoaded();
 		mStage.show();
 
 		// prepare other data that is not shown at startup
@@ -132,6 +143,22 @@ public final class MainWindowController extends FXMLController {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle(mResources.getString("error"));
 				alert.setHeaderText(mResources.getString("error_saving_title"));
+				alert.setContentText(ex.getLocalizedMessage());
+				alert.showAndWait();
+			}
+		}
+	}
+
+	private void loadConfig() {
+		File file = mFileChooser.showOpenDialog(mStage);
+		if (file != null) {
+			try {
+				ConfigController.getInstance().loadConfig(file);
+			} catch (Exception ex) {
+				Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle(mResources.getString("error"));
+				alert.setHeaderText(mResources.getString("error_loading_title"));
 				alert.setContentText(ex.getLocalizedMessage());
 				alert.showAndWait();
 			}
@@ -159,7 +186,7 @@ public final class MainWindowController extends FXMLController {
 	 * Called when the window is initialy shown
 	 */
 	private void onEnter() {
-		ConfigController.getInstance().addListener(mOnPadChangeListener);
+		ConfigController.getInstance().addListener(mOnChangeListener);
 	}
 
 	/**
@@ -178,7 +205,6 @@ public final class MainWindowController extends FXMLController {
 				saveConfig();
 			}
 		}
-		ConfigController.getInstance().removeListener(mOnPadChangeListener);
 	}
 
 }
