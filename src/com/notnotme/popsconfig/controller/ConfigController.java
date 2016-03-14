@@ -141,7 +141,7 @@ public final class ConfigController {
 			is.close();
 		}
 
-		// Write __sce_menuinfo struct into a buffer
+		// Load data from the buffer
 		if(bb.getInt() != CONFIG_MAGIC_1 || bb.getInt() != CONFIG_MAGIC_2) {
 			throw new Exception("Not a Pops __sce_menuinfo file");
 		}

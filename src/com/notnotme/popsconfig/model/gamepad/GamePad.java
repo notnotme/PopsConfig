@@ -51,7 +51,7 @@ public final class GamePad {
 	 * @param psxTouchButton The ps one button to bind
 	 * @throws Exception If the binding cannot be done
 	 *
-	 * It return false if you do a mistake in the mapping. The psone emu
+	 * It throws an Exception if you do a mistake in the mapping. The psone emu
 	 * in psvita allow only some binding for retro touch (L and R 1,2,3)
 	 * and some other for front touch (all but L1+R1 and L2+R2)
 	 */
