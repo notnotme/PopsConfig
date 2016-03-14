@@ -32,7 +32,7 @@ public final class GamePad {
 		assign(VitaButton.L, PsxButton.L1);
 		assign(VitaButton.R, PsxButton.R1);
 		assign(VitaButton.LEFT_ANALOG_LEFT, PsxButton.UNUSED);
-		assign(VitaButton.LEFT_LANALOG_RIGHT, PsxButton.UNUSED);
+		assign(VitaButton.LEFT_ANALOG_RIGHT, PsxButton.UNUSED);
 		assign(VitaButton.LEFT_ANALOG_UP, PsxButton.UNUSED);
 		assign(VitaButton.LEFT_ANALOG_DOWN, PsxButton.UNUSED);
 		assign(VitaButton.RIGHT_ANALOG_LEFT, PsxButton.UNUSED);

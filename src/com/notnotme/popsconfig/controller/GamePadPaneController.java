@@ -269,7 +269,7 @@ public final class GamePadPaneController implements Initializable {
 		mLStickRightButtonCombo.setButtonCell(ListCellFactory.getPsxButtonListCell(resources));
 		mLStickRightButtonCombo.setItems(buttons);
 		mLStickRightButtonCombo.valueProperty().addListener((ObservableValue<? extends PsxButton> observable, PsxButton oldValue, PsxButton newValue) -> {
-			bindButton(VitaButton.LEFT_LANALOG_RIGHT, newValue);
+			bindButton(VitaButton.LEFT_ANALOG_RIGHT, newValue);
 		});
 
 		mLStickUpButtonCombo.setCellFactory(ListCellFactory.getPsxButtonCellFactory(resources));
@@ -364,7 +364,7 @@ public final class GamePadPaneController implements Initializable {
 		mRearTouchUpperRightCombo.setCellFactory(ListCellFactory.getPsxTouchButtonCellFactory(resources));
 		mRearTouchUpperRightCombo.setButtonCell(ListCellFactory.getPsxTouchButtonListCell(resources));
 		mRearTouchUpperRightCombo.setItems(rButtons);
-		mRearTouchBottomRightCombo.valueProperty().addListener((ObservableValue<? extends PsxTouchButton> observable, PsxTouchButton oldValue, PsxTouchButton newValue) -> {
+		mRearTouchUpperRightCombo.valueProperty().addListener((ObservableValue<? extends PsxTouchButton> observable, PsxTouchButton oldValue, PsxTouchButton newValue) -> {
 			bindButton(VitaTouchButton.REAR_TOUCH_UPPER_RIGHT, newValue);
 		});
 
@@ -437,7 +437,7 @@ public final class GamePadPaneController implements Initializable {
 		mCircleButtonCombo.setValue(controller.get(VitaButton.CIRCLE));
 		mTriangleButtonCombo.setValue(controller.get(VitaButton.TRIANGLE));
 		mLStickLeftButtonCombo.setValue(controller.get(VitaButton.LEFT_ANALOG_LEFT));
-		mLStickRightButtonCombo.setValue(controller.get(VitaButton.LEFT_LANALOG_RIGHT));
+		mLStickRightButtonCombo.setValue(controller.get(VitaButton.LEFT_ANALOG_RIGHT));
 		mLStickUpButtonCombo.setValue(controller.get(VitaButton.LEFT_ANALOG_UP));
 		mLStickDownButtonCombo.setValue(controller.get(VitaButton.LEFT_ANALOG_DOWN));
 		mRStickLeftButtonCombo.setValue(controller.get(VitaButton.RIGHT_ANALOG_LEFT));
@@ -471,6 +471,10 @@ public final class GamePadPaneController implements Initializable {
 				Level.INFO, "Bind button fail: VitaButton: {0}, PsxButton: {1}",
 				new Object[]{vitaButton, psxButton});
 		}
+
+		Logger.getLogger(TAG).log(
+			Level.INFO, "Bind button: VitaButton: {0}, PsxButton: {1}",
+			new Object[]{vitaButton, psxButton});
 	}
 
 	private void bindButton(VitaTouchButton vitaButton, PsxTouchButton psxButton) {
@@ -482,6 +486,10 @@ public final class GamePadPaneController implements Initializable {
 				Level.WARNING, "Bind button fail: VitaButton: {0}, PsxButton: {1}",
 				new Object[]{vitaButton, psxButton});
 		}
+
+		Logger.getLogger(TAG).log(
+			Level.INFO, "Bind button: VitaButton: {0}, PsxButton: {1}",
+			new Object[]{vitaButton, psxButton});
 	}
 
 }

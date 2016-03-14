@@ -18,7 +18,7 @@ public enum VitaButton {
 	LEFT_ANALOG_UP("analog.left.up"),
 	LEFT_ANALOG_DOWN("analog.left.down"),
 	LEFT_ANALOG_LEFT("analog.left.left"),
-	LEFT_LANALOG_RIGHT("analog.left.right"),
+	LEFT_ANALOG_RIGHT("analog.left.right"),
 	RIGHT_ANALOG_UP("analog.right.up"),
 	RIGHT_ANALOG_DOWN("analog.right.down"),
 	RIGHT_ANALOG_LEFT("analog.right.left"),
