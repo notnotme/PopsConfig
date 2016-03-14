@@ -1,5 +1,7 @@
 package com.notnotme.popsconfig.model.screen;
 
+import com.sun.javafx.geom.Rectangle;
+
 /**
  * @author romain
  */
@@ -7,15 +9,12 @@ public final class Screen {
 
 	private ScreenMode mMode;
 	private ScreenFilter mFilter;
-
-	private int mX;
-	private int mY;
-	private int mWidth;
-	private int mHeight;
+	private Rectangle mCustomSize;
 
 	public Screen() {
 		mMode = ScreenMode.ORIGINAL;
 		mFilter = ScreenFilter.NONE;
+		mCustomSize = new Rectangle();
 	}
 
 	public ScreenMode getMode() {
@@ -34,36 +33,12 @@ public final class Screen {
 		this.mFilter = mFilter;
 	}
 
-	public int getX() {
-		return mX;
+	public Rectangle getCustomSize() {
+		return mCustomSize;
 	}
 
-	public void setX(int mX) {
-		this.mX = mX;
-	}
-
-	public int getY() {
-		return mY;
-	}
-
-	public void setY(int mY) {
-		this.mY = mY;
-	}
-
-	public int getWidth() {
-		return mWidth;
-	}
-
-	public void setWidth(int mWidth) {
-		this.mWidth = mWidth;
-	}
-
-	public int getHeight() {
-		return mHeight;
-	}
-
-	public void setHeight(int mHeight) {
-		this.mHeight = mHeight;
+	public void setCustomSize(Rectangle mCustomSize) {
+		this.mCustomSize = mCustomSize;
 	}
 
 }

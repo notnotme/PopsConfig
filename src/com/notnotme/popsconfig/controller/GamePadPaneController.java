@@ -12,6 +12,7 @@ import com.notnotme.popsconfig.model.gamepad.VitaTouchButton;
 import com.notnotme.popsconfig.model.screen.ScreenFilter;
 import com.notnotme.popsconfig.model.screen.ScreenMode;
 import com.notnotme.popsconfig.ui.factory.ListCellFactory;
+import com.sun.javafx.geom.Rectangle;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -22,6 +23,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 
 /**
@@ -71,6 +74,11 @@ public final class GamePadPaneController implements Initializable {
 	@FXML private ComboBox<PsxButton> mRStickUpButtonCombo;
 	@FXML private ComboBox<PsxButton> mRStickDownButtonCombo;
 
+	@FXML private Spinner<Integer> mCustomScreenXSprinner;
+	@FXML private Spinner<Integer> mCustomScreenYSprinner;
+	@FXML private Spinner<Integer> mCustomScreenWidthSprinner;
+	@FXML private Spinner<Integer> mCustomScreenHeightSprinner;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Logger.getLogger(TAG).log(
@@ -81,6 +89,7 @@ public final class GamePadPaneController implements Initializable {
 		setupTouchPadTab(resources);
 		setupRearTouchPadTab(resources);
 		setupCustomButtonsTab(resources);
+		setupCustomScreenTab(resources);
 	}
 
 	private void setupMainTab(ResourceBundle resources) {
@@ -391,6 +400,38 @@ public final class GamePadPaneController implements Initializable {
 		mRearTouchBottomRightCombo.setValue(controller.get(VitaTouchButton.REAR_TOUCH_BOTTOM_RIGHT));
 	}
 
+	private void setupCustomScreenTab(ResourceBundle resources) {
+		ConfigController controller = ConfigController.getInstance();
+
+		mCustomScreenXSprinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,960));
+		mCustomScreenXSprinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
+			Rectangle rect = new Rectangle(controller.getScreenSize());
+			rect.x = newValue;
+			controller.setScreenSize(rect);
+		});
+
+		mCustomScreenYSprinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,544));
+		mCustomScreenYSprinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
+			Rectangle rect = new Rectangle(controller.getScreenSize());
+			rect.y = newValue;
+			controller.setScreenSize(rect);
+		});
+
+		mCustomScreenWidthSprinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,960));
+		mCustomScreenWidthSprinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
+			Rectangle rect = new Rectangle(controller.getScreenSize());
+			rect.width = newValue;
+			controller.setScreenSize(rect);
+		});
+
+		mCustomScreenHeightSprinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,544));
+		mCustomScreenHeightSprinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
+			Rectangle rect = new Rectangle(controller.getScreenSize());
+			rect.height = newValue;
+			controller.setScreenSize(rect);
+		});
+	}
+
 	private void bindButton(VitaButton vitaButton, PsxButton psxButton) {
 		try {
 			ConfigController.getInstance().assign(vitaButton, psxButton);
@@ -406,9 +447,9 @@ public final class GamePadPaneController implements Initializable {
 		try {
 			ConfigController.getInstance().assign(vitaButton, psxButton);
 		} catch (Exception e) {
-			Logger.getLogger(TAG).log(Level.INFO, null, e);
+			Logger.getLogger(TAG).log(Level.WARNING, null, e);
 			Logger.getLogger(TAG).log(
-				Level.INFO, "Bind button fail: VitaButton: {0}, PsxButton: {1}",
+				Level.WARNING, "Bind button fail: VitaButton: {0}, PsxButton: {1}",
 				new Object[]{vitaButton, psxButton});
 		}
 	}

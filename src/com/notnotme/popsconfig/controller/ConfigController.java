@@ -13,7 +13,7 @@ import com.notnotme.popsconfig.model.gamepad.VitaTouchButton;
 import com.notnotme.popsconfig.model.screen.Screen;
 import com.notnotme.popsconfig.model.screen.ScreenFilter;
 import com.notnotme.popsconfig.model.screen.ScreenMode;
-import java.io.DataOutputStream;
+import com.sun.javafx.geom.Rectangle;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
@@ -84,7 +84,7 @@ public final class ConfigController {
 		bb.putInt(CONFIG_MAGIC_1); // header
 		bb.putInt(CONFIG_MAGIC_2); // header
 		bb.putInt(CONFIG_VERSION); // header
-		bb.putInt(0); // unk (?)
+		bb.putInt(0); // unk (?) disc number?
 		bb.putInt(mDiscLoading.ordinal()); // disc
 		bb.putInt(mSoundVolume.ordinal()); // volume
 		bb.putInt(mGamePad.getPort().ordinal()); // gamepad port
@@ -92,10 +92,13 @@ public final class ConfigController {
 		bb.putShort((short) mGamePad.getMapping().ordinal()); // gamepad mapping
 		bb.putInt(mScreen.getFilter().ordinal()); // screen filter
 		bb.putInt(mScreen.getMode().ordinal()); // screenmode
-		bb.putInt(mScreen.getX()); // screen X
-		bb.putInt(mScreen.getY()); // screen Y
-		bb.putInt(mScreen.getWidth()); // screen W
-		bb.putInt(mScreen.getHeight()); // screen H
+
+		Rectangle screenSize = mScreen.getCustomSize();
+		bb.putInt(screenSize.x); // screen X
+		bb.putInt(screenSize.y); // screen Y
+		bb.putInt(screenSize.width); // screen W
+		bb.putInt(screenSize.height); // screen H
+
 		// game pad custom keys & touch
 		for (VitaButton button : VitaButton.values()) {
 			bb.putInt(get(button).ordinal());
@@ -224,6 +227,17 @@ public final class ConfigController {
 
 	public SoundVolume getSoundVolume() {
 		return mSoundVolume;
+	}
+
+	public void setScreenSize(Rectangle rect) {
+		if (mScreen.getCustomSize().equals(rect)) return;
+
+		mScreen.setCustomSize(rect);
+		invalidateChange();
+	}
+
+	public Rectangle getScreenSize() {
+		return mScreen.getCustomSize();
 	}
 
 	/**
