@@ -15,8 +15,16 @@ import java.util.logging.Logger;
  * @author romain
  */
 public final class Utils {
+
 	private final static String TAG = Utils.class.getSimpleName();
 
+	/**
+	 * Return a file that is inside a .jar archive
+	 * @param loader A ClassLoader instance
+	 * @param path The path of the file inside the jar
+	 * @return A temporary file representating the one inside the jar
+	 * @throws IOException If an error occur
+	 */
 	public static File jarEntryToFile(ClassLoader loader, String path) throws IOException {
 		File file = File.createTempFile(path, null);
 
@@ -31,6 +39,11 @@ public final class Utils {
 		return file;
 	}
 
+	/**
+	 * List all Files inside a .jar archive
+	 * @param jarPath The path to reach the archive
+	 * @return An ArrayList of entries or null if an error occur
+	 */
 	public static ArrayList<JarEntry> getJarEntry(String jarPath) {
 		File jarRawFile = new File(jarPath);
 		if(! jarRawFile.exists() || !jarRawFile.isFile()) {
