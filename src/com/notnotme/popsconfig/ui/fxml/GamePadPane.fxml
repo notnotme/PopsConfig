@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
@@ -20,7 +21,7 @@
                <children>
                   <GridPane hgap="5.0" vgap="5.0">
                      <columnConstraints>
-                        <ColumnConstraints hgrow="ALWAYS" />
+                        <ColumnConstraints hgrow="NEVER" />
                         <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
                      </columnConstraints>
                      <rowConstraints>
@@ -30,23 +31,28 @@
                         <RowConstraints vgrow="NEVER" />
                         <RowConstraints vgrow="NEVER" />
                         <RowConstraints vgrow="NEVER" />
-                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                      </rowConstraints>
                      <children>
-                        <ComboBox fx:id="mButtonsMappingCombo" prefWidth="200.0" GridPane.columnIndex="1" />
-                        <Label text="%controls" />
-                        <Label text="%controls.port" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="mControllersCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="mControllerModeCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="%controls.mode" GridPane.rowIndex="2" />
-                        <Label text="%screen.filter" GridPane.rowIndex="4" />
-                        <Label text="%screen.mode" GridPane.rowIndex="3" />
-                        <ComboBox fx:id="mScreenModeCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <ComboBox fx:id="mScreenFilterCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="%sound.volume" GridPane.rowIndex="5" />
-                        <Label text="%disc.loading" GridPane.rowIndex="6" />
-                        <ComboBox fx:id="mAudioBoostCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <ComboBox fx:id="mDiscLoadingCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <ComboBox fx:id="mButtonsMappingCombo" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="%controls" GridPane.rowIndex="1" />
+                        <Label text="%controls.port" />
+                        <HBox alignment="CENTER_RIGHT" spacing="6.0" GridPane.columnIndex="1">
+                           <children>
+                              <ComboBox fx:id="mControllersCombo" prefWidth="87.0" />
+                              <ComboBox fx:id="mControllerModeCombo" prefWidth="127.0" />
+                           </children>
+                        </HBox>
+                        <Label text="%screen.filter" GridPane.rowIndex="3" />
+                        <Label text="%screen.mode" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="mScreenModeCombo" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="mScreenFilterCombo" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="%sound.volume" GridPane.rowIndex="4" />
+                        <Label text="%disc.loading" GridPane.rowIndex="5" />
+                        <ComboBox fx:id="mAudioBoostCombo" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <ComboBox fx:id="mDiscLoadingCombo" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label text="%disc.number" GridPane.rowIndex="6" />
+                        <ComboBox fx:id="mDiscNumberCombo" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" />
@@ -56,7 +62,7 @@
                      <content>
                         <GridPane hgap="5.0" vgap="5.0">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="NEVER" />
                               <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
                            </columnConstraints>
                            <rowConstraints>
@@ -85,7 +91,7 @@
                      <content>
                         <GridPane hgap="5.0" vgap="5.0">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="ALWAYS" />
+                              <ColumnConstraints hgrow="NEVER" />
                               <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
                            </columnConstraints>
                            <rowConstraints>
