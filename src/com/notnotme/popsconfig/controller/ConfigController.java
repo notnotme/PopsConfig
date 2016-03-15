@@ -228,7 +228,7 @@ public final class ConfigController {
 		return mGamePad.getMapping();
 	}
 
-	public void assign(VitaButton vitaButton, PsxButton psxButton) throws Exception {
+	public void assign(VitaButton vitaButton, PsxButton psxButton) {
 		if (mGamePad.get(vitaButton) == psxButton) return;
 
 		mGamePad.assign(vitaButton, psxButton);

@@ -182,7 +182,7 @@ public final class GamePadPaneController implements Initializable {
 	}
 
 	private void setupCustomButtonsTab(ResourceBundle resources) {
-		ObservableList<PsxButton> buttons = FXCollections.observableArrayList(PsxButton.UNUSED,
+		final ObservableList<PsxButton> buttons = FXCollections.observableArrayList(PsxButton.UNUSED,
 				PsxButton.UP, PsxButton.DOWN, PsxButton.LEFT, PsxButton.RIGHT, PsxButton.START, PsxButton.SELECT,
 				PsxButton.CROSS, PsxButton.SQUARE, PsxButton.CIRCLE, PsxButton.TRIANGLE, PsxButton.L1, PsxButton.L2,
 				PsxButton.L3, PsxButton.R1, PsxButton.R2, PsxButton.R3, PsxButton.L1_R1, PsxButton.L2_R2);
@@ -315,7 +315,7 @@ public final class GamePadPaneController implements Initializable {
 	}
 
 	private void setupTouchPadTab(ResourceBundle resources) {
-		ObservableList<PsxTouchButton> buttons = FXCollections.observableArrayList(PsxTouchButton.UNUSED,
+		final ObservableList<PsxTouchButton> buttons = FXCollections.observableArrayList(PsxTouchButton.UNUSED,
 				PsxTouchButton.UP, PsxTouchButton.DOWN, PsxTouchButton.LEFT, PsxTouchButton.RIGHT, PsxTouchButton.START, PsxTouchButton.SELECT,
 				PsxTouchButton.CROSS, PsxTouchButton.SQUARE, PsxTouchButton.CIRCLE, PsxTouchButton.TRIANGLE, PsxTouchButton.L1, PsxTouchButton.L2,
 				PsxTouchButton.L3, PsxTouchButton.R1, PsxTouchButton.R2, PsxTouchButton.R3);
@@ -350,7 +350,7 @@ public final class GamePadPaneController implements Initializable {
 	}
 
 	private void setupRearTouchPadTab(ResourceBundle resources) {
-		ObservableList<PsxTouchButton> rButtons = FXCollections.observableArrayList(PsxTouchButton.UNUSED, PsxTouchButton.R1, PsxTouchButton.R2, PsxTouchButton.R3);
+		final ObservableList<PsxTouchButton> rButtons = FXCollections.observableArrayList(PsxTouchButton.UNUSED, PsxTouchButton.R1, PsxTouchButton.R2, PsxTouchButton.R3);
 		ObservableList<PsxTouchButton> lButtons = FXCollections.observableArrayList(PsxTouchButton.UNUSED, PsxTouchButton.L1, PsxTouchButton.L2, PsxTouchButton.L3);
 
 		mRearTouchUpperLeftCombo.setCellFactory(ListCellFactory.getPsxTouchButtonCellFactory(resources));
@@ -462,15 +462,7 @@ public final class GamePadPaneController implements Initializable {
 	}
 
 	private void bindButton(VitaButton vitaButton, PsxButton psxButton) {
-		try {
-			ConfigController.getInstance().assign(vitaButton, psxButton);
-		} catch (Exception e) {
-			Logger.getLogger(TAG).log(Level.INFO, null, e);
-			Logger.getLogger(TAG).log(
-				Level.INFO, "Bind button fail: VitaButton: {0}, PsxButton: {1}",
-				new Object[]{vitaButton, psxButton});
-		}
-
+		ConfigController.getInstance().assign(vitaButton, psxButton);
 		Logger.getLogger(TAG).log(
 			Level.INFO, "Bind button: VitaButton: {0}, PsxButton: {1}",
 			new Object[]{vitaButton, psxButton});
