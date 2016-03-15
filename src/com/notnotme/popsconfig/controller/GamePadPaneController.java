@@ -9,6 +9,7 @@ import com.notnotme.popsconfig.model.gamepad.PsxButton;
 import com.notnotme.popsconfig.model.gamepad.PsxTouchButton;
 import com.notnotme.popsconfig.model.gamepad.VitaButton;
 import com.notnotme.popsconfig.model.gamepad.VitaTouchButton;
+import com.notnotme.popsconfig.model.screen.Screen;
 import com.notnotme.popsconfig.model.screen.ScreenFilter;
 import com.notnotme.popsconfig.model.screen.ScreenMode;
 import com.notnotme.popsconfig.ui.factory.ListCellFactory;
@@ -75,10 +76,11 @@ public final class GamePadPaneController implements Initializable {
 	@FXML private ComboBox<PsxButton> mRStickUpButtonCombo;
 	@FXML private ComboBox<PsxButton> mRStickDownButtonCombo;
 
-	@FXML private Spinner<Integer> mCustomScreenXSprinner;
-	@FXML private Spinner<Integer> mCustomScreenYSprinner;
-	@FXML private Spinner<Integer> mCustomScreenWidthSprinner;
-	@FXML private Spinner<Integer> mCustomScreenHeightSprinner;
+	@FXML private Spinner<Integer> mCustomScreenXSpinner;
+	@FXML private Spinner<Integer> mCustomScreenYSpinner;
+	@FXML private Spinner<Integer> mCustomScreenWidthSpinner;
+	@FXML private Spinner<Integer> mCustomScreenHeightSpinner;
+	@FXML private javafx.scene.shape.Rectangle mScreenRect;
 
 		/**
 	 * A OnChangeListener that update the status bar when the GamePad model is saved or modified.
@@ -392,31 +394,39 @@ public final class GamePadPaneController implements Initializable {
 	private void setupCustomScreenTab(ResourceBundle resources) {
 		ConfigController controller = ConfigController.getInstance();
 
-		mCustomScreenXSprinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,960));
-		mCustomScreenXSprinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
+		mCustomScreenXSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(-160,160));
+		mCustomScreenXSpinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
 			Rectangle rect = new Rectangle(controller.getScreenSize());
+
 			rect.x = newValue;
+			mScreenRect.translateXProperty().set(rect.x/2);
 			controller.setScreenSize(rect);
 		});
 
-		mCustomScreenYSprinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,544));
-		mCustomScreenYSprinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
+		mCustomScreenYSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(-272,272));
+		mCustomScreenYSpinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
 			Rectangle rect = new Rectangle(controller.getScreenSize());
+
 			rect.y = newValue;
+			mScreenRect.translateYProperty().set(rect.y/2);
 			controller.setScreenSize(rect);
 		});
 
-		mCustomScreenWidthSprinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,960));
-		mCustomScreenWidthSprinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
+		mCustomScreenWidthSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,320));
+		mCustomScreenWidthSpinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
 			Rectangle rect = new Rectangle(controller.getScreenSize());
 			rect.width = newValue;
+
+			mScreenRect.setWidth(Screen.BASE_WIDTH + rect.width/2);
 			controller.setScreenSize(rect);
 		});
 
-		mCustomScreenHeightSprinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,544));
-		mCustomScreenHeightSprinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
+		mCustomScreenHeightSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,240));
+		mCustomScreenHeightSpinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
 			Rectangle rect = new Rectangle(controller.getScreenSize());
 			rect.height = newValue;
+
+			mScreenRect.setHeight(Screen.BASE_HEIGHT + rect.height/2);
 			controller.setScreenSize(rect);
 		});
 	}
@@ -463,10 +473,10 @@ public final class GamePadPaneController implements Initializable {
 		mRearTouchBottomRightCombo.setValue(controller.get(VitaTouchButton.REAR_TOUCH_BOTTOM_RIGHT));
 
 		Rectangle screen = controller.getScreenSize();
-		mCustomScreenXSprinner.getValueFactory().setValue(screen.x);
-		mCustomScreenYSprinner.getValueFactory().setValue(screen.y);
-		mCustomScreenWidthSprinner.getValueFactory().setValue(screen.width);
-		mCustomScreenHeightSprinner.getValueFactory().setValue(screen.height);
+		mCustomScreenXSpinner.getValueFactory().setValue(screen.x);
+		mCustomScreenYSpinner.getValueFactory().setValue(screen.y);
+		mCustomScreenWidthSpinner.getValueFactory().setValue(screen.width);
+		mCustomScreenHeightSpinner.getValueFactory().setValue(screen.height);
 	}
 
 	private void bindButton(VitaButton vitaButton, PsxButton psxButton) {

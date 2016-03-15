@@ -7,6 +7,9 @@ import com.sun.javafx.geom.Rectangle;
  */
 public final class Screen {
 
+	public static final int BASE_WIDTH = 320;
+	public static final int BASE_HEIGHT = 240;
+
 	private ScreenMode mMode;
 	private ScreenFilter mFilter;
 	private Rectangle mCustomSize;
@@ -14,7 +17,7 @@ public final class Screen {
 	public Screen() {
 		mMode = ScreenMode.ORIGINAL;
 		mFilter = ScreenFilter.NONE;
-		mCustomSize = new Rectangle();
+		mCustomSize = new Rectangle(0,0);
 	}
 
 	public ScreenMode getMode() {
