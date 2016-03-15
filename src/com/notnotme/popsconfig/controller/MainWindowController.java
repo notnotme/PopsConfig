@@ -6,10 +6,9 @@ import com.notnotme.popsconfig.utils.Utils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Enumeration;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.HostServices;
@@ -181,39 +180,39 @@ public final class MainWindowController extends FXMLController {
 	 * This can be used to quick edit or reset the configuration
 	 */
 	private void loadSystemPreset() {
-		File jarRawFile = new File(getClass().getProtectionDomain()
+		ArrayList<JarEntry> entryList = Utils.getJarEntry(getClass().getProtectionDomain()
 				.getCodeSource().getLocation().getPath());
 
-		if(! jarRawFile.isFile()) {
+		if (entryList == null) {
+			Logger.getLogger(TAG).log(Level.SEVERE, "No JAR ?!");
+			mMenuSystemPreset.getItems().add(
+				new MenuItem(mResources.getString("preset.empty")));
+
 			return;
 		}
 
 		// List file inside our jar
-		try (JarFile jarFile = new JarFile(jarRawFile)) {
-			Enumeration<JarEntry> entries = jarFile.entries();
-
-			while(entries.hasMoreElements()) {
-				JarEntry entry = entries.nextElement();
-				String name = entry.getName();
-				if (name.startsWith("com/notnotme/popsconfig/res/preset") && !name.endsWith("/")) {
-					// We got a preset file, add it to the menu
-					MenuItem menuItem = new MenuItem(name.substring(name.lastIndexOf('/') + 1));
-					menuItem.setOnAction((ActionEvent event) -> {
-						try {
-							ConfigController.getInstance().loadConfig(
+		entryList.stream().forEach((entry) -> {
+			String name = entry.getName();
+			if (name.startsWith("com/notnotme/popsconfig/res/preset") && !name.endsWith("/")) {
+				// We got a preset file, add it to the menu
+				MenuItem menuItem = new MenuItem(name.substring(name.lastIndexOf('/') + 1));
+				menuItem.setOnAction((ActionEvent event) -> {
+					try {
+						ConfigController.getInstance().loadConfig(
 								Utils.jarEntryToFile(getClass().getClassLoader(), entry.getName()));
-						} catch (Exception ex) {
-							Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-						}
-					});
-					mMenuSystemPreset.getItems().add(menuItem);
-				}
+					} catch (Exception ex) {
+						Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle(mResources.getString("error"));
+						alert.setHeaderText(mResources.getString("error_loading_title"));
+						alert.setContentText(ex.getLocalizedMessage());
+						alert.showAndWait();
+					}
+				});
+				mMenuSystemPreset.getItems().add(menuItem);
 			}
-
-			jarFile.close();
-		} catch (Exception ex) {
-			Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-		}
+		});
 	}
 
 	/**
@@ -222,6 +221,8 @@ public final class MainWindowController extends FXMLController {
 	 */
 	private void loadUserPreset() {
 		// todo
+		mMenuUserPreset.getItems().add(
+				new MenuItem(mResources.getString("preset.empty")));
 	}
 
 	private void showAboutDialog() {
