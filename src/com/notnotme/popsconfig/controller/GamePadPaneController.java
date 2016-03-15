@@ -44,6 +44,7 @@ public final class GamePadPaneController implements Initializable {
 	@FXML private ComboBox<ScreenFilter> mScreenFilterCombo;
 	@FXML private ComboBox<DiscLoading> mDiscLoadingCombo;
 	@FXML private ComboBox<SoundVolume> mAudioBoostCombo;
+	@FXML private ComboBox<Integer> mDiscNumberCombo;
 
 	@FXML private ComboBox<PsxTouchButton> mTouchUpperLeftCombo;
 	@FXML private ComboBox<PsxTouchButton> mTouchUpperRightCombo;
@@ -178,6 +179,12 @@ public final class GamePadPaneController implements Initializable {
 		mAudioBoostCombo.setItems(FXCollections.observableArrayList(SoundVolume.values()));
 		mAudioBoostCombo.valueProperty().addListener((ObservableValue<? extends SoundVolume> observable, SoundVolume oldValue, SoundVolume newValue) -> {
 			controller.setSoundVolume(newValue);
+		});
+
+		// Disc number
+		mDiscNumberCombo.setItems(FXCollections.observableArrayList(1,2,3,4));
+		mDiscNumberCombo.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
+			controller.setDiscNumber(newValue - 1);
 		});
 	}
 
@@ -424,6 +431,7 @@ public final class GamePadPaneController implements Initializable {
 		mScreenFilterCombo.setValue(controller.getScreenFilter());
 		mDiscLoadingCombo.setValue(controller.getDiscLoading());
 		mAudioBoostCombo.setValue(controller.getSoundVolume());
+		mDiscNumberCombo.setValue(controller.getDiscNumber()+1);
 
 		mUpButtonCombo.setValue(controller.get(VitaButton.UP));
 		mLeftButtonCombo.setValue(controller.get(VitaButton.LEFT));

@@ -62,6 +62,7 @@ public final class ConfigController {
 
 	private final GamePad mGamePad;
 	private final Screen mScreen;
+	private int mDiscNumber;
 	private DiscLoading mDiscLoading;
 	private SoundVolume mSoundVolume;
 
@@ -71,6 +72,7 @@ public final class ConfigController {
 
 		mGamePad = new GamePad();
 		mScreen = new Screen();
+		mDiscNumber = 0;
 		mDiscLoading = DiscLoading.NORMAL;
 		mSoundVolume = SoundVolume.NORMAL;
 	}
@@ -87,8 +89,7 @@ public final class ConfigController {
 		bb.putInt(CONFIG_MAGIC_2); // header
 		bb.putInt(CONFIG_VERSION); // header
 
-		bb.putInt(0); // unk (?) disc number?
-
+		bb.putInt(mDiscNumber); // disc number
 		bb.putInt(mDiscLoading.ordinal()); // disc
 		bb.putInt(mSoundVolume.ordinal()); // volume
 		bb.putInt(mGamePad.getPort().ordinal()); // gamepad port
@@ -150,8 +151,7 @@ public final class ConfigController {
 			throw new Exception("Version mismatch");
 		}
 
-		bb.getInt(); // unk (?) disc number?
-
+		mDiscNumber = bb.getInt();
 		mDiscLoading = DiscLoading.values()[bb.getInt()];
 		mSoundVolume = SoundVolume.values()[bb.getInt()];
 		mGamePad.setPort(GamePadPort.values()[bb.getInt()]);
@@ -303,6 +303,17 @@ public final class ConfigController {
 
 	public Rectangle getScreenSize() {
 		return mScreen.getCustomSize();
+	}
+
+	public void setDiscNumber(int discNumber) {
+		if (mDiscNumber == discNumber) return;
+
+		mDiscNumber = discNumber;
+		invalidateChange();
+	}
+
+	public int getDiscNumber() {
+		return mDiscNumber;
 	}
 
 	/**

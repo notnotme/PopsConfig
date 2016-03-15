@@ -31,7 +31,7 @@
                         <RowConstraints vgrow="NEVER" />
                         <RowConstraints vgrow="NEVER" />
                         <RowConstraints vgrow="NEVER" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                        <RowConstraints vgrow="NEVER" />
                      </rowConstraints>
                      <children>
                         <ComboBox fx:id="mButtonsMappingCombo" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
