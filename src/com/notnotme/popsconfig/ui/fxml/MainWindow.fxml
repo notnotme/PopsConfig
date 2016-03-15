@@ -21,6 +21,12 @@
               <MenuItem fx:id="mItemClose" mnemonicParsing="false" text="%close" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="%preset">
+              <items>
+                  <Menu fx:id="mMenuSystemPreset" mnemonicParsing="false" text="%preset.system" />
+                  <Menu fx:id="mMenuUserPreset" mnemonicParsing="false" text="%preset.user" />
+              </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="%help">
             <items>
               <MenuItem fx:id="mItemAbout" mnemonicParsing="false" text="%about" />

@@ -1,11 +1,15 @@
 package com.notnotme.popsconfig.controller;
 
-import com.notnotme.popsconfig.controller.factory.FXMLController;
 import com.notnotme.popsconfig.controller.factory.ControllerFactory;
+import com.notnotme.popsconfig.controller.factory.FXMLController;
+import com.notnotme.popsconfig.utils.Utils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.ResourceBundle;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.HostServices;
@@ -17,6 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Paint;
@@ -40,6 +45,8 @@ public final class MainWindowController extends FXMLController {
 	@FXML private MenuItem mItemAbout;
 	@FXML private MenuItem mItemLoad;
 	@FXML private Label mStatusLabel;
+	@FXML private Menu mMenuSystemPreset;
+	@FXML private Menu mMenuUserPreset;
 
 	/**
 	 * A OnChangeListener that update the status bar when the GamePad model is saved or modified.
@@ -105,6 +112,8 @@ public final class MainWindowController extends FXMLController {
 		mItemAbout.setOnAction((ActionEvent event) -> {
 			showAboutDialog();
 		});
+		loadSystemPreset();
+		loadUserPreset();
 
 		// Get the stage form the stage helper (also removing it)
 		// - set title and scene
@@ -140,7 +149,7 @@ public final class MainWindowController extends FXMLController {
 			try {
 				ConfigController.getInstance().saveConfig(file);
 			} catch (Exception ex) {
-				Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle(mResources.getString("error"));
 				alert.setHeaderText(mResources.getString("error_saving_title"));
@@ -157,7 +166,7 @@ public final class MainWindowController extends FXMLController {
 			try {
 				ConfigController.getInstance().loadConfig(file);
 			} catch (Exception ex) {
-				Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle(mResources.getString("error"));
 				alert.setHeaderText(mResources.getString("error_loading_title"));
@@ -165,6 +174,54 @@ public final class MainWindowController extends FXMLController {
 				alert.showAndWait();
 			}
 		}
+	}
+
+	/**
+	 * Prepare all preset file found in the package res/preset
+	 * This can be used to quick edit or reset the configuration
+	 */
+	private void loadSystemPreset() {
+		File jarRawFile = new File(getClass().getProtectionDomain()
+				.getCodeSource().getLocation().getPath());
+
+		if(! jarRawFile.isFile()) {
+			return;
+		}
+
+		// List file inside our jar
+		try (JarFile jarFile = new JarFile(jarRawFile)) {
+			Enumeration<JarEntry> entries = jarFile.entries();
+
+			while(entries.hasMoreElements()) {
+				JarEntry entry = entries.nextElement();
+				String name = entry.getName();
+				if (name.startsWith("com/notnotme/popsconfig/res/preset") && !name.endsWith("/")) {
+					// We got a preset file, add it to the menu
+					MenuItem menuItem = new MenuItem(name.substring(name.lastIndexOf('/') + 1));
+					menuItem.setOnAction((ActionEvent event) -> {
+						try {
+							ConfigController.getInstance().loadConfig(
+								Utils.jarEntryToFile(getClass().getClassLoader(), entry.getName()));
+						} catch (Exception ex) {
+							Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
+						}
+					});
+					mMenuSystemPreset.getItems().add(menuItem);
+				}
+			}
+
+			jarFile.close();
+		} catch (Exception ex) {
+			Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
+		}
+	}
+
+	/**
+	 * Load the preset from the current directory (look for "preset")
+	 * or in the user directory (look for ~/.popsconfig/preset)
+	 */
+	private void loadUserPreset() {
+		// todo
 	}
 
 	private void showAboutDialog() {
