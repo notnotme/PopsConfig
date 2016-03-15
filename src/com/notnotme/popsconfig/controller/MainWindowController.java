@@ -136,6 +136,7 @@ public final class MainWindowController extends FXMLController {
 	private void saveConfig() {
 		File file = mFileChooser.showSaveDialog(mStage);
 		if (file != null) {
+			mFileChooser.setInitialDirectory(file.getParentFile());
 			try {
 				ConfigController.getInstance().saveConfig(file);
 			} catch (Exception ex) {
@@ -152,6 +153,7 @@ public final class MainWindowController extends FXMLController {
 	private void loadConfig() {
 		File file = mFileChooser.showOpenDialog(mStage);
 		if (file != null) {
+			mFileChooser.setInitialDirectory(file.getParentFile());
 			try {
 				ConfigController.getInstance().loadConfig(file);
 			} catch (Exception ex) {
