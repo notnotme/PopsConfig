@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.HostServices;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -89,10 +90,12 @@ public final class MainWindowController extends FXMLController {
 					ResourceBundle.getBundle("com.notnotme.popsconfig.ui.fxml.ui")));
 		} catch (IOException ex) {
 			Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-
-			mStatusLabel.setText(ex.getLocalizedMessage());
-			mStatusLabel.setTextFill(Paint.valueOf("red"));
-			return;
+			if (ex.getCause() != null) {
+				showErrorDialog(mResources.getString("error"), null, ex.getCause().getLocalizedMessage());
+			} else {
+				showErrorDialog(mResources.getString("error"), null, ex.getLocalizedMessage());
+			}
+			Platform.exit();
 		}
 
 		// Set up the menu items actions
@@ -123,10 +126,20 @@ public final class MainWindowController extends FXMLController {
 		mStage.centerOnScreen();
 		mStage.setResizable(false);
 		mStage.setOnShown((WindowEvent event) -> {
-			onEnter();
+			ConfigController.getInstance().addListener(mOnChangeListener);
 		});
 		mStage.setOnHiding((WindowEvent event) -> {
-			onExit();
+			ConfigController controller = ConfigController.getInstance();
+			if (!controller.isSaved() && !mFirstConfig) {
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle(mResources.getString("warning"));
+				alert.setHeaderText(mResources.getString("exit_without_saving_title"));
+				alert.setContentText(mResources.getString("exit_without_saving_content"));
+				alert.showAndWait();
+				if (alert.getResult() != ButtonType.OK) {
+					saveConfig();
+				}
+			}
 		});
 
 		// Application is ready so show it
@@ -150,11 +163,9 @@ public final class MainWindowController extends FXMLController {
 				ConfigController.getInstance().saveConfig(file);
 			} catch (Exception ex) {
 				Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle(mResources.getString("error"));
-				alert.setHeaderText(mResources.getString("error_saving_title"));
-				alert.setContentText(ex.getLocalizedMessage());
-				alert.showAndWait();
+				showErrorDialog(mResources.getString("error"),
+						mResources.getString("error_saving_title"),
+						ex.getLocalizedMessage());
 			}
 		}
 	}
@@ -169,7 +180,9 @@ public final class MainWindowController extends FXMLController {
 				ConfigController.getInstance().loadConfig(file);
 			} catch (Exception ex) {
 				Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-				showLoadingError(ex);
+				showErrorDialog(mResources.getString("error"),
+						mResources.getString("error_loading_title"),
+						ex.getLocalizedMessage());
 			}
 		}
 	}
@@ -203,7 +216,9 @@ public final class MainWindowController extends FXMLController {
 								Utils.jarEntryToFile(getClass().getClassLoader(), entry));
 					} catch (Exception ex) {
 						Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-						showLoadingError(ex);
+						showErrorDialog(mResources.getString("error"),
+							mResources.getString("error_loading_title"),
+							ex.getLocalizedMessage());
 					}
 				});
 				mMenuSystemPreset.getItems().add(menuItem);
@@ -229,7 +244,9 @@ public final class MainWindowController extends FXMLController {
 						ConfigController.getInstance().loadConfig(currentFile);
 					} catch (Exception ex) {
 						Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-						showLoadingError(ex);
+						showErrorDialog(mResources.getString("error"),
+							mResources.getString("error_loading_title"),
+							ex.getLocalizedMessage());
 					}
 				});
 				mMenuUserPreset.getItems().add(menuItem);
@@ -241,7 +258,7 @@ public final class MainWindowController extends FXMLController {
 			path = getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 			path = path.substring(0, path.lastIndexOf(File.separator) + 1) + "preset";
 		} catch (URISyntaxException ex) {
-			Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
+			Logger.getLogger(TAG).log(Level.WARNING, null, ex);
 		}
 
 		userDirectory = new File(path);
@@ -254,7 +271,9 @@ public final class MainWindowController extends FXMLController {
 						ConfigController.getInstance().loadConfig(currentFile);
 					} catch (Exception ex) {
 						Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-						showLoadingError(ex);
+						showErrorDialog(mResources.getString("error"),
+							mResources.getString("error_loading_title"),
+							ex.getLocalizedMessage());
 					}
 				});
 				mMenuUserPreset.getItems().add(menuItem);
@@ -280,41 +299,19 @@ public final class MainWindowController extends FXMLController {
 
 		} catch (IOException ex) {
 			Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-			mStatusLabel.setText(ex.getLocalizedMessage());
-			mStatusLabel.setTextFill(Paint.valueOf("red"));
-		}
-	}
-
-	/**
-	 * Called when the window is initialy shown
-	 */
-	private void onEnter() {
-		ConfigController.getInstance().addListener(mOnChangeListener);
-	}
-
-	/**
-	 * Called when the user quit
-	 * Ask for save change if needed
-	 */
-	private void onExit() {
-		ConfigController controller = ConfigController.getInstance();
-		if (!controller.isSaved() && !mFirstConfig) {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle(mResources.getString("warning"));
-			alert.setHeaderText(mResources.getString("exit_without_saving_title"));
-			alert.setContentText(mResources.getString("exit_without_saving_content"));
-			alert.showAndWait();
-			if (alert.getResult() != ButtonType.OK) {
-				saveConfig();
+			if (ex.getCause() != null) {
+				showErrorDialog(mResources.getString("error"), null, ex.getCause().getLocalizedMessage());
+			} else {
+				showErrorDialog(mResources.getString("error"), null, ex.getLocalizedMessage());
 			}
 		}
 	}
 
-	private void showLoadingError(Exception ex) {
+	private void showErrorDialog(String title, String header, String content) {
 		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle(mResources.getString("error"));
-		alert.setHeaderText(mResources.getString("error_loading_title"));
-		alert.setContentText(ex.getLocalizedMessage());
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(content);
 		alert.showAndWait();
 	}
 
