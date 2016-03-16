@@ -48,6 +48,7 @@ public final class PopsConfig extends Application {
 				alert.setContentText(e.getLocalizedMessage());
 			}
 			alert.showAndWait();
+			throw e;
 		}
 	}
 
