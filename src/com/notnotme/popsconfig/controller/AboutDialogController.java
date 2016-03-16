@@ -32,6 +32,7 @@ public final class AboutDialogController extends FXMLController {
 	@FXML private Hyperlink mWebsiteLink;
 	@FXML private Hyperlink mGithubLink;
 	@FXML private Hyperlink mSongLink;
+	@FXML private Hyperlink mIconsLink;
 	@FXML private Hyperlink mMuxmLink;
 
 	public AboutDialogController(HostServices hostServices, Stage stage) {
@@ -59,6 +60,9 @@ public final class AboutDialogController extends FXMLController {
 		});
 		mSongLink.setOnAction((ActionEvent event) -> {
 			mHostServices.showDocument("http://ultrasyd.free.fr/");
+		});
+		mIconsLink.setOnAction((ActionEvent event) -> {
+			mHostServices.showDocument("http://github.com/damieng/silk-companion/");
 		});
 
 		mStage.initModality(Modality.APPLICATION_MODAL);

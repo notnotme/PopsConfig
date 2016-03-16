@@ -6,6 +6,8 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
@@ -15,21 +17,63 @@
         <menus>
           <Menu mnemonicParsing="false" text="%file">
             <items>
-                  <MenuItem fx:id="mItemLoad" mnemonicParsing="false" text="%load" />
-                  <MenuItem fx:id="mItemSave" mnemonicParsing="false" text="%save" />
+                  <MenuItem fx:id="mItemLoad" mnemonicParsing="false" text="%load">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../res/icons/disk_upload.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></MenuItem>
+                  <MenuItem fx:id="mItemSave" mnemonicParsing="false" text="%save">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../res/icons/disk_download.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></MenuItem>
                   <SeparatorMenuItem mnemonicParsing="false" />
-              <MenuItem fx:id="mItemClose" mnemonicParsing="false" text="%close" />
+              <MenuItem fx:id="mItemClose" mnemonicParsing="false" text="%close">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../res/icons/decline.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></MenuItem>
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="%preset">
               <items>
-                  <Menu fx:id="mMenuSystemPreset" mnemonicParsing="false" text="%preset.system" />
-                  <Menu fx:id="mMenuUserPreset" mnemonicParsing="false" text="%preset.user" />
+                  <Menu fx:id="mMenuSystemPreset" mnemonicParsing="false" text="%preset.system">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../res/icons/laptop.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Menu>
+                  <Menu fx:id="mMenuUserPreset" mnemonicParsing="false" text="%preset.user">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../res/icons/user_b.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Menu>
               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="%help">
             <items>
-              <MenuItem fx:id="mItemAbout" mnemonicParsing="false" text="%about" />
+              <MenuItem fx:id="mItemAbout" mnemonicParsing="false" text="%about">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../res/icons/star_gold.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></MenuItem>
             </items>
           </Menu>
         </menus>

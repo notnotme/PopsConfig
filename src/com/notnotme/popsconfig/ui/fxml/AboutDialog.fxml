@@ -50,6 +50,12 @@
          <VBox.margin>
             <Insets />
          </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="20.0" layoutY="186.0">
+         <children>
+            <Label text="%iconsby" />
+            <Hyperlink fx:id="mIconsLink" text="damieng" />
+         </children>
          <padding>
             <Insets bottom="15.0" />
          </padding>
