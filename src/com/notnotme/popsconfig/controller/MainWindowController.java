@@ -143,6 +143,7 @@ public final class MainWindowController extends FXMLController {
 	}
 
 	private void saveConfig() {
+		mFileChooser.setTitle(mResources.getString("save_title"));
 		File file = mFileChooser.showSaveDialog(mStage);
 		if (file != null) {
 			mFileChooser.setInitialDirectory(file.getParentFile());
@@ -160,8 +161,10 @@ public final class MainWindowController extends FXMLController {
 	}
 
 	private void loadConfig() {
+		mFileChooser.setTitle(mResources.getString("load_title"));
 		File file = mFileChooser.showOpenDialog(mStage);
 		if (file != null) {
+			mFileChooser.setTitle(mResources.getString("load"));
 			mFileChooser.setInitialDirectory(file.getParentFile());
 			try {
 				ConfigController.getInstance().loadConfig(file);
@@ -194,6 +197,7 @@ public final class MainWindowController extends FXMLController {
 			if (name.startsWith("com/notnotme/popsconfig/res/preset") && !name.endsWith("/")) {
 				// We got a preset file, add it to the menu
 				MenuItem menuItem = new MenuItem(name.substring(name.lastIndexOf('/') + 1));
+				menuItem.setMnemonicParsing(false);
 				menuItem.setOnAction((ActionEvent event) -> {
 					try {
 						ConfigController.getInstance().loadConfig(
@@ -220,7 +224,8 @@ public final class MainWindowController extends FXMLController {
 		if (userDirectory.isDirectory()) {
 			for (File currentFile : userDirectory.listFiles()) {
 				MenuItem menuItem = new MenuItem(currentFile.getName());
-				menuItem.setOnAction((ActionEvent event) -> {
+					menuItem.setMnemonicParsing(false);
+					menuItem.setOnAction((ActionEvent event) -> {
 					try {
 						ConfigController.getInstance().loadConfig(currentFile);
 					} catch (Exception ex) {
@@ -239,6 +244,7 @@ public final class MainWindowController extends FXMLController {
 		if (userDirectory.isDirectory()) {
 			for (File currentFile : userDirectory.listFiles()) {
 				MenuItem menuItem = new MenuItem(currentFile.getName());
+				menuItem.setMnemonicParsing(false);
 				menuItem.setOnAction((ActionEvent event) -> {
 					try {
 						ConfigController.getInstance().loadConfig(currentFile);

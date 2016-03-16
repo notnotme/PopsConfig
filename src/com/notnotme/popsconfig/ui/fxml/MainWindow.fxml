@@ -8,6 +8,7 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
@@ -15,38 +16,47 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="%file">
+          <Menu mnemonicParsing="true" text="%file">
             <items>
-                  <MenuItem fx:id="mItemLoad" mnemonicParsing="false" text="%load">
+                  <MenuItem fx:id="mItemLoad" mnemonicParsing="true" text="%load">
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../res/icons/disk_upload.png" />
                            </image>
                         </ImageView>
-                     </graphic></MenuItem>
-                  <MenuItem fx:id="mItemSave" mnemonicParsing="false" text="%save">
+                     </graphic>
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <MenuItem fx:id="mItemSave" mnemonicParsing="true" text="%save">
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../res/icons/disk_download.png" />
                            </image>
                         </ImageView>
-                     </graphic></MenuItem>
+                     </graphic>
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+                     </accelerator></MenuItem>
                   <SeparatorMenuItem mnemonicParsing="false" />
-              <MenuItem fx:id="mItemClose" mnemonicParsing="false" text="%close">
+              <MenuItem fx:id="mItemClose" mnemonicParsing="true" text="%quit">
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../res/icons/decline.png" />
                            </image>
                         </ImageView>
-                     </graphic></MenuItem>
+                     </graphic>
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+                     </accelerator></MenuItem>
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="%preset">
+            <Menu mnemonicParsing="true" text="%preset">
               <items>
-                  <Menu fx:id="mMenuSystemPreset" mnemonicParsing="false" text="%preset.system">
+                  <Menu fx:id="mMenuSystemPreset" mnemonicParsing="true" text="%preset.system">
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -54,7 +64,7 @@
                            </image>
                         </ImageView>
                      </graphic></Menu>
-                  <Menu fx:id="mMenuUserPreset" mnemonicParsing="false" text="%preset.user">
+                  <Menu fx:id="mMenuUserPreset" mnemonicParsing="true" text="%preset.user">
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -64,9 +74,9 @@
                      </graphic></Menu>
               </items>
             </Menu>
-          <Menu mnemonicParsing="false" text="%help">
+          <Menu mnemonicParsing="true" text="%help">
             <items>
-              <MenuItem fx:id="mItemAbout" mnemonicParsing="false" text="%about">
+              <MenuItem fx:id="mItemAbout" mnemonicParsing="true" text="%about">
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>

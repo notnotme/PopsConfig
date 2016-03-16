@@ -10,9 +10,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.HostServices;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -75,6 +77,9 @@ public final class AboutDialogController extends FXMLController {
 		});
 		mStage.setOnHiding((WindowEvent event) -> {
 			onExit();
+		});
+		mStage.addEventHandler(KeyEvent.KEY_PRESSED, (Event event) -> {
+			mStage.hide();
 		});
 		mStage.show();
 	}
