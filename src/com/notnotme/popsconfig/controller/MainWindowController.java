@@ -6,6 +6,7 @@ import com.notnotme.popsconfig.controller.factory.FXMLController;
 import com.notnotme.popsconfig.utils.Utils;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -180,8 +181,13 @@ public final class MainWindowController extends FXMLController {
 	 * This can be used to quick edit or reset the configuration
 	 */
 	private void loadSystemPreset() {
-		ArrayList<JarEntry> entryList = Utils.getJarEntry(getClass().getProtectionDomain()
-				.getCodeSource().getLocation().getPath());
+		ArrayList<JarEntry> entryList = null;
+		try {
+			entryList = Utils.getJarEntry(getClass().getProtectionDomain()
+					.getCodeSource().getLocation().toURI().getPath());
+		} catch (URISyntaxException ex) {
+			Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+		}
 
 		if (entryList == null) {
 			Logger.getLogger(TAG).log(Level.SEVERE, "No JAR ?!");
