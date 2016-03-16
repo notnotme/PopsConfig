@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public final class PopsConfig extends Application {
 
-	private final static String TAG = PopsConfig.class.getSimpleName();
+	public final static String TAG = PopsConfig.class.getSimpleName();
 
 	@Override
 	public void init() throws Exception {

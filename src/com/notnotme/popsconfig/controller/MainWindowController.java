@@ -1,5 +1,6 @@
 package com.notnotme.popsconfig.controller;
 
+import com.notnotme.popsconfig.PopsConfig;
 import com.notnotme.popsconfig.controller.factory.ControllerFactory;
 import com.notnotme.popsconfig.controller.factory.FXMLController;
 import com.notnotme.popsconfig.utils.Utils;
@@ -166,11 +167,7 @@ public final class MainWindowController extends FXMLController {
 				ConfigController.getInstance().loadConfig(file);
 			} catch (Exception ex) {
 				Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle(mResources.getString("error"));
-				alert.setHeaderText(mResources.getString("error_loading_title"));
-				alert.setContentText(ex.getLocalizedMessage());
-				alert.showAndWait();
+				showLoadingError(ex);
 			}
 		}
 	}
@@ -203,11 +200,7 @@ public final class MainWindowController extends FXMLController {
 								Utils.jarEntryToFile(getClass().getClassLoader(), entry.getName()));
 					} catch (Exception ex) {
 						Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-						Alert alert = new Alert(AlertType.ERROR);
-						alert.setTitle(mResources.getString("error"));
-						alert.setHeaderText(mResources.getString("error_loading_title"));
-						alert.setContentText(ex.getLocalizedMessage());
-						alert.showAndWait();
+						showLoadingError(ex);
 					}
 				});
 				mMenuSystemPreset.getItems().add(menuItem);
@@ -220,9 +213,48 @@ public final class MainWindowController extends FXMLController {
 	 * or in the user directory (look for ~/.popsconfig/preset)
 	 */
 	private void loadUserPreset() {
-		// todo
-		mMenuUserPreset.getItems().add(
-				new MenuItem(mResources.getString("preset.empty")));
+		// Get the user directory
+		String path = System.getProperty("user.home");
+		File userDirectory = new File(path + File.separator + "." + PopsConfig.TAG + File.separator + "preset");
+
+		if (userDirectory.isDirectory()) {
+			for (File currentFile : userDirectory.listFiles()) {
+				MenuItem menuItem = new MenuItem(currentFile.getName());
+				menuItem.setOnAction((ActionEvent event) -> {
+					try {
+						ConfigController.getInstance().loadConfig(currentFile);
+					} catch (Exception ex) {
+						Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
+						showLoadingError(ex);
+					}
+				});
+				mMenuUserPreset.getItems().add(menuItem);
+			}
+		}
+
+		// Get from current dir
+		path = System.getProperty("user.dir");
+		userDirectory = new File(path + File.separator + "preset");
+
+		if (userDirectory.isDirectory()) {
+			for (File currentFile : userDirectory.listFiles()) {
+				MenuItem menuItem = new MenuItem(currentFile.getName());
+				menuItem.setOnAction((ActionEvent event) -> {
+					try {
+						ConfigController.getInstance().loadConfig(currentFile);
+					} catch (Exception ex) {
+						Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
+						showLoadingError(ex);
+					}
+				});
+				mMenuUserPreset.getItems().add(menuItem);
+			}
+		}
+
+		if (mMenuUserPreset.getItems().isEmpty()) {
+			mMenuUserPreset.getItems().add(
+					new MenuItem(mResources.getString("preset.empty")));
+		}
 	}
 
 	private void showAboutDialog() {
@@ -265,6 +297,14 @@ public final class MainWindowController extends FXMLController {
 				saveConfig();
 			}
 		}
+	}
+
+	private void showLoadingError(Exception ex) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle(mResources.getString("error"));
+		alert.setHeaderText(mResources.getString("error_loading_title"));
+		alert.setContentText(ex.getLocalizedMessage());
+		alert.showAndWait();
 	}
 
 }
