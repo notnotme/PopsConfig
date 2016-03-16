@@ -30,17 +30,15 @@ public final class PopsConfig extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		ResourceBundle resources = ResourceBundle.getBundle("com.notnotme.popsconfig.ui.fxml.ui");
 		try {
 			Logger.getLogger(TAG).log(Level.INFO, "start()");
 			FXMLLoader.load(
 					getClass().getResource("/com/notnotme/popsconfig/ui/fxml/MainWindow.fxml"),
-					resources,
+					ResourceBundle.getBundle("com.notnotme.popsconfig.ui.fxml.ui"),
 					null,
 					new ControllerFactory(getHostServices(), stage));
 		} catch (Exception e) {
 			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle(resources.getString("error"));
 			alert.setHeaderText(null);
 			if (e.getCause() != null) {
 				alert.setContentText(e.getCause().getLocalizedMessage());
@@ -48,7 +46,6 @@ public final class PopsConfig extends Application {
 				alert.setContentText(e.getLocalizedMessage());
 			}
 			alert.showAndWait();
-			throw e;
 		}
 	}
 

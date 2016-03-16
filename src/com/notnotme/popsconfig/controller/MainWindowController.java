@@ -91,9 +91,9 @@ public final class MainWindowController extends FXMLController {
 		} catch (IOException ex) {
 			Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
 			if (ex.getCause() != null) {
-				showErrorDialog(mResources.getString("error"), null, ex.getCause().getLocalizedMessage());
+				showErrorDialog(null, ex.getCause().getLocalizedMessage());
 			} else {
-				showErrorDialog(mResources.getString("error"), null, ex.getLocalizedMessage());
+				showErrorDialog(null, ex.getLocalizedMessage());
 			}
 			Platform.exit();
 		}
@@ -163,8 +163,7 @@ public final class MainWindowController extends FXMLController {
 				ConfigController.getInstance().saveConfig(file);
 			} catch (Exception ex) {
 				Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-				showErrorDialog(mResources.getString("error"),
-						mResources.getString("error_saving_title"),
+				showErrorDialog(mResources.getString("error_saving_title"),
 						ex.getLocalizedMessage());
 			}
 		}
@@ -180,8 +179,7 @@ public final class MainWindowController extends FXMLController {
 				ConfigController.getInstance().loadConfig(file);
 			} catch (Exception ex) {
 				Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-				showErrorDialog(mResources.getString("error"),
-						mResources.getString("error_loading_title"),
+				showErrorDialog(mResources.getString("error_loading_title"),
 						ex.getLocalizedMessage());
 			}
 		}
@@ -216,8 +214,7 @@ public final class MainWindowController extends FXMLController {
 								Utils.jarEntryToFile(getClass().getClassLoader(), entry));
 					} catch (Exception ex) {
 						Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-						showErrorDialog(mResources.getString("error"),
-							mResources.getString("error_loading_title"),
+						showErrorDialog(mResources.getString("error_loading_title"),
 							ex.getLocalizedMessage());
 					}
 				});
@@ -244,8 +241,7 @@ public final class MainWindowController extends FXMLController {
 						ConfigController.getInstance().loadConfig(currentFile);
 					} catch (Exception ex) {
 						Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-						showErrorDialog(mResources.getString("error"),
-							mResources.getString("error_loading_title"),
+						showErrorDialog(mResources.getString("error_loading_title"),
 							ex.getLocalizedMessage());
 					}
 				});
@@ -271,8 +267,7 @@ public final class MainWindowController extends FXMLController {
 						ConfigController.getInstance().loadConfig(currentFile);
 					} catch (Exception ex) {
 						Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
-						showErrorDialog(mResources.getString("error"),
-							mResources.getString("error_loading_title"),
+						showErrorDialog(mResources.getString("error_loading_title"),
 							ex.getLocalizedMessage());
 					}
 				});
@@ -300,16 +295,15 @@ public final class MainWindowController extends FXMLController {
 		} catch (IOException ex) {
 			Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
 			if (ex.getCause() != null) {
-				showErrorDialog(mResources.getString("error"), null, ex.getCause().getLocalizedMessage());
+				showErrorDialog(null, ex.getCause().getLocalizedMessage());
 			} else {
-				showErrorDialog(mResources.getString("error"), null, ex.getLocalizedMessage());
+				showErrorDialog(null, ex.getLocalizedMessage());
 			}
 		}
 	}
 
-	private void showErrorDialog(String title, String header, String content) {
+	private void showErrorDialog(String header, String content) {
 		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle(title);
 		alert.setHeaderText(header);
 		alert.setContentText(content);
 		alert.showAndWait();
