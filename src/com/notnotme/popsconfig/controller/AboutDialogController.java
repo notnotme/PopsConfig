@@ -68,7 +68,7 @@ public final class AboutDialogController extends FXMLController {
 		});
 
 		mStage.initModality(Modality.APPLICATION_MODAL);
-		mStage.setTitle(resources.getString("about"));
+		mStage.setTitle(resources.getString("about_title"));
 		mStage.setScene(new Scene(mRoot));
 		mStage.setResizable(false);
 		mStage.centerOnScreen();
