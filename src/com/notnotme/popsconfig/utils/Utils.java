@@ -21,14 +21,14 @@ public final class Utils {
 	/**
 	 * Return a file that is inside a .jar archive
 	 * @param loader A ClassLoader instance
-	 * @param path The path of the file inside the jar
+	 * @param jarEntry  The jar entry to deflate into a temporary file
 	 * @return A temporary file representating the one inside the jar
 	 * @throws IOException If an error occur
 	 */
-	public static File jarEntryToFile(ClassLoader loader, String path) throws IOException {
-		File file = File.createTempFile(path, null);
+	public static File jarEntryToFile(ClassLoader loader, JarEntry jarEntry) throws IOException {
+		File file = File.createTempFile(jarEntry.getName(), null);
 
-		try (FileOutputStream fos = new FileOutputStream(file); InputStream is = loader.getResourceAsStream(path)) {
+		try (FileOutputStream fos = new FileOutputStream(file); InputStream is = loader.getResourceAsStream(jarEntry.getName())) {
 			int read;
 			byte[] buffer = new byte[1024];
 			while ((read = is.read(buffer)) > 0) {

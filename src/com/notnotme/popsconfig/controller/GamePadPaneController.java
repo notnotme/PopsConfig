@@ -29,6 +29,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 
 /**
  * @author romain
@@ -37,6 +38,7 @@ public final class GamePadPaneController implements Initializable {
 
 	private final static String TAG = GamePadPaneController.class.getSimpleName();
 
+	@FXML private TabPane mTabPane;
 	@FXML private Tab mCustomButtonsTab;
 	@FXML private Tab mCustomScreenTab;
 
@@ -100,6 +102,7 @@ public final class GamePadPaneController implements Initializable {
 		@Override
 		public void onLoaded() {
 			refreshDatas();
+			mTabPane.getSelectionModel().select(0);
 		}
 	};
 

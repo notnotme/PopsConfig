@@ -197,7 +197,7 @@ public final class MainWindowController extends FXMLController {
 				menuItem.setOnAction((ActionEvent event) -> {
 					try {
 						ConfigController.getInstance().loadConfig(
-								Utils.jarEntryToFile(getClass().getClassLoader(), entry.getName()));
+								Utils.jarEntryToFile(getClass().getClassLoader(), entry));
 					} catch (Exception ex) {
 						Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
 						showLoadingError(ex);
