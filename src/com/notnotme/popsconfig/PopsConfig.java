@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 /**
@@ -29,12 +30,25 @@ public final class PopsConfig extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		Logger.getLogger(TAG).log(Level.INFO, "start()");
-		FXMLLoader.load(
-				getClass().getResource("/com/notnotme/popsconfig/ui/fxml/MainWindow.fxml"),
-				ResourceBundle.getBundle("com.notnotme.popsconfig.ui.fxml.ui"),
-				null,
-				new ControllerFactory(getHostServices(), stage));
+		ResourceBundle resources = ResourceBundle.getBundle("com.notnotme.popsconfig.ui.fxml.ui");
+		try {
+			Logger.getLogger(TAG).log(Level.INFO, "start()");
+			FXMLLoader.load(
+					getClass().getResource("/com/notnotme/popsconfig/ui/fxml/MainWindow.fxml"),
+					resources,
+					null,
+					new ControllerFactory(getHostServices(), stage));
+		} catch (Exception e) {
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle(resources.getString("error"));
+			alert.setHeaderText(null);
+			if (e.getCause() != null) {
+				alert.setContentText(e.getCause().getLocalizedMessage());
+			} else {
+				alert.setContentText(e.getLocalizedMessage());
+			}
+			alert.showAndWait();
+		}
 	}
 
 	/**
