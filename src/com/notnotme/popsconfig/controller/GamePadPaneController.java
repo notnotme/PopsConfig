@@ -21,8 +21,10 @@ import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -81,6 +83,7 @@ public final class GamePadPaneController implements Initializable {
 	@FXML private Spinner<Integer> mCustomScreenWidthSpinner;
 	@FXML private Spinner<Integer> mCustomScreenHeightSpinner;
 	@FXML private javafx.scene.shape.Rectangle mScreenRect;
+	@FXML private Button mResetScreenButton;
 
 		/**
 	 * A OnChangeListener that update the status bar when the GamePad model is saved or modified.
@@ -428,6 +431,13 @@ public final class GamePadPaneController implements Initializable {
 
 			mScreenRect.setHeight(Screen.BASE_HEIGHT + rect.height/2);
 			controller.setScreenSize(rect);
+		});
+
+		mResetScreenButton.setOnAction((ActionEvent event) -> {
+			mCustomScreenWidthSpinner.getValueFactory().setValue(0);
+			mCustomScreenHeightSpinner.getValueFactory().setValue(0);
+			mCustomScreenXSpinner.getValueFactory().setValue(0);
+			mCustomScreenYSpinner.getValueFactory().setValue(0);
 		});
 	}
 
