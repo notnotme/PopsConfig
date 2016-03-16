@@ -8,9 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.jar.JarEntry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.HostServices;
@@ -181,24 +179,19 @@ public final class MainWindowController extends FXMLController {
 	 * This can be used to quick edit or reset the configuration
 	 */
 	private void loadSystemPreset() {
-		ArrayList<JarEntry> entryList = null;
-		try {
-			entryList = Utils.getJarEntry(getClass().getProtectionDomain()
-					.getCodeSource().getLocation().toURI().getPath());
-		} catch (URISyntaxException ex) {
-			Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
-		}
+		String path = null;
 
-		if (entryList == null) {
-			Logger.getLogger(TAG).log(Level.SEVERE, "No JAR ?!");
+		try {
+			path = getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		} catch (URISyntaxException ex) {
+			Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
 			mMenuSystemPreset.getItems().add(
 				new MenuItem(mResources.getString("preset.empty")));
-
-			return;
 		}
 
 		// List file inside our jar
-		entryList.stream().forEach((entry) -> {
+		if (path == null) return;
+		Utils.getJarEntry(path).stream().forEach((entry) -> {
 			String name = entry.getName();
 			if (name.startsWith("com/notnotme/popsconfig/res/preset") && !name.endsWith("/")) {
 				// We got a preset file, add it to the menu
@@ -243,10 +236,15 @@ public final class MainWindowController extends FXMLController {
 			}
 		}
 
-		// Get from current dir
-		path = System.getProperty("user.dir");
-		userDirectory = new File(path + File.separator + "preset");
+		// Try to get from current directory
+		try {
+			path = getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+			path = path.substring(0, path.lastIndexOf(File.separator) + 1) + "preset";
+		} catch (URISyntaxException ex) {
+			Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
+		}
 
+		userDirectory = new File(path);
 		if (userDirectory.isDirectory()) {
 			for (File currentFile : userDirectory.listFiles()) {
 				MenuItem menuItem = new MenuItem(currentFile.getName());
@@ -263,6 +261,7 @@ public final class MainWindowController extends FXMLController {
 			}
 		}
 
+		// If none was found add an item to show that nothing is here
 		if (mMenuUserPreset.getItems().isEmpty()) {
 			mMenuUserPreset.getItems().add(
 					new MenuItem(mResources.getString("preset.empty")));
