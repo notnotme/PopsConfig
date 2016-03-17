@@ -199,7 +199,7 @@
       </Tab>
       <Tab fx:id="mCustomScreenTab" closable="false" text="%tab_screen">
          <content>
-            <VBox alignment="CENTER" spacing="15.0">
+            <VBox alignment="TOP_CENTER" spacing="15.0">
                <children>
                   <GridPane hgap="5.0" vgap="5.0">
                     <columnConstraints>
@@ -224,7 +224,7 @@
                      </children>
                   </GridPane>
                   <Button fx:id="mResetScreenButton" mnemonicParsing="false" text="%reset" />
-                  <StackPane VBox.vgrow="ALWAYS">
+                  <StackPane fx:id="mScreenStackPane" VBox.vgrow="ALWAYS">
                      <children>
                         <Rectangle fill="#dadadaf0" height="272.0" stroke="BLACK" strokeType="OUTSIDE" width="480.0" StackPane.alignment="CENTER" />
                         <Rectangle fx:id="mScreenRect" fill="DODGERBLUE" height="240.0" opacity="0.75" stroke="BLACK" strokeType="OUTSIDE" width="320.0" StackPane.alignment="CENTER" />

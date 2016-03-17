@@ -30,6 +30,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.StackPane;
 
 /**
  * @author romain
@@ -37,6 +38,9 @@ import javafx.scene.control.TabPane;
 public final class GamePadPaneController implements Initializable {
 
 	private final static String TAG = GamePadPaneController.class.getSimpleName();
+	private final static int EMU_WIDTH = 320;
+	private final static int EMU_HEIGHT = 240;
+	private final static int SCREEN_HEIGHT = 272;
 
 	@FXML private TabPane mTabPane;
 	@FXML private Tab mCustomButtonsTab;
@@ -84,6 +88,7 @@ public final class GamePadPaneController implements Initializable {
 	@FXML private Spinner<Integer> mCustomScreenYSpinner;
 	@FXML private Spinner<Integer> mCustomScreenWidthSpinner;
 	@FXML private Spinner<Integer> mCustomScreenHeightSpinner;
+	@FXML private StackPane mScreenStackPane;
 	@FXML private javafx.scene.shape.Rectangle mScreenRect;
 	@FXML private Button mResetScreenButton;
 
@@ -400,37 +405,113 @@ public final class GamePadPaneController implements Initializable {
 	private void setupCustomScreenTab(ResourceBundle resources) {
 		ConfigController controller = ConfigController.getInstance();
 
-		mCustomScreenXSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(-160,160));
+		mCustomScreenXSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(-EMU_WIDTH/2, EMU_WIDTH/2));
 		mCustomScreenXSpinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
 			Rectangle rect = new Rectangle(controller.getScreenSize());
-
 			rect.x = newValue;
+
+			SpinnerValueFactory.IntegerSpinnerValueFactory factory =
+					(SpinnerValueFactory.IntegerSpinnerValueFactory) mCustomScreenXSpinner.getValueFactory();
+
+			if (rect.x < 0) {
+				if ((rect.x-rect.width/2) < -EMU_WIDTH/2) {
+					factory.setMin(rect.x);
+					factory.setValue(rect.x);
+				} else {
+					factory.setMin(-EMU_WIDTH/2);
+				}
+			} else {
+				if ((rect.x+rect.width/2) >= EMU_WIDTH/2) {
+					factory.setMax(rect.x);
+					factory.setValue(rect.x);
+				} else {
+					factory.setMax(EMU_WIDTH/2);
+				}
+			}
+
 			mScreenRect.translateXProperty().set(rect.x/2);
 			controller.setScreenSize(rect);
 		});
 
-		mCustomScreenYSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(-272,272));
+		mCustomScreenYSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(-SCREEN_HEIGHT,SCREEN_HEIGHT));
 		mCustomScreenYSpinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
 			Rectangle rect = new Rectangle(controller.getScreenSize());
-
 			rect.y = newValue;
+
+			SpinnerValueFactory.IntegerSpinnerValueFactory factory =
+					(SpinnerValueFactory.IntegerSpinnerValueFactory) mCustomScreenYSpinner.getValueFactory();
+
+			if (rect.y < 0) {
+				if ((rect.y-rect.height/2) < -SCREEN_HEIGHT) {
+					factory.setMin(rect.y);
+					factory.setValue(rect.y);
+				} else {
+					factory.setMin(-SCREEN_HEIGHT);
+				}
+			} else {
+				if ((rect.y+rect.height/2) >= SCREEN_HEIGHT) {
+					factory.setMax(rect.y);
+					factory.setValue(rect.y);
+				} else {
+					factory.setMax(SCREEN_HEIGHT);
+				}
+			}
+
 			mScreenRect.translateYProperty().set(rect.y/2);
 			controller.setScreenSize(rect);
 		});
 
-		mCustomScreenWidthSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,320));
+		mCustomScreenWidthSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,EMU_WIDTH));
 		mCustomScreenWidthSpinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
 			Rectangle rect = new Rectangle(controller.getScreenSize());
 			rect.width = newValue;
+
+			SpinnerValueFactory.IntegerSpinnerValueFactory factory =
+					(SpinnerValueFactory.IntegerSpinnerValueFactory) mCustomScreenWidthSpinner.getValueFactory();
+
+			if (rect.x < 0) {
+				if ((rect.x-rect.width/2) < -EMU_WIDTH/2) {
+					factory.setMax(rect.width);
+					factory.setValue(rect.width);
+				} else {
+					factory.setMax(EMU_WIDTH);
+				}
+			} else {
+				if ((rect.x+rect.width/2) >= EMU_WIDTH/2) {
+					factory.setMax(rect.width);
+					factory.setValue(rect.width);
+				} else {
+					factory.setMax(EMU_WIDTH);
+				}
+			}
 
 			mScreenRect.setWidth(Screen.BASE_WIDTH + rect.width/2);
 			controller.setScreenSize(rect);
 		});
 
-		mCustomScreenHeightSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,240));
+		mCustomScreenHeightSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,EMU_HEIGHT));
 		mCustomScreenHeightSpinner.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {
 			Rectangle rect = new Rectangle(controller.getScreenSize());
 			rect.height = newValue;
+
+			SpinnerValueFactory.IntegerSpinnerValueFactory factory =
+					(SpinnerValueFactory.IntegerSpinnerValueFactory) mCustomScreenHeightSpinner.getValueFactory();
+
+			if (rect.y < 0) {
+				if ((rect.y-rect.height/2) < -SCREEN_HEIGHT) {
+					factory.setMax(rect.height);
+					factory.setValue(rect.height);
+				} else {
+					factory.setMax(EMU_HEIGHT);
+				}
+			} else {
+				if ((rect.y+rect.height/2) >= SCREEN_HEIGHT) {
+					factory.setMax(rect.height);
+					factory.setValue(rect.height);
+				} else {
+					factory.setMax(EMU_HEIGHT);
+				}
+			}
 
 			mScreenRect.setHeight(Screen.BASE_HEIGHT + rect.height/2);
 			controller.setScreenSize(rect);
@@ -441,6 +522,13 @@ public final class GamePadPaneController implements Initializable {
 			mCustomScreenHeightSpinner.getValueFactory().setValue(0);
 			mCustomScreenXSpinner.getValueFactory().setValue(0);
 			mCustomScreenYSpinner.getValueFactory().setValue(0);
+		});
+
+		javafx.scene.shape.Rectangle clipRectangle = new javafx.scene.shape.Rectangle();
+		mScreenStackPane.setClip(clipRectangle);
+		mScreenStackPane.layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
+			clipRectangle.setWidth(newValue.getWidth());
+			clipRectangle.setHeight(newValue.getHeight());
 		});
 	}
 
