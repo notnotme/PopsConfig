@@ -35,9 +35,9 @@ import javafx.scene.layout.StackPane;
 /**
  * @author romain
  */
-public final class GamePadPaneController implements Initializable {
+public final class ConfigurationPaneController implements Initializable {
 
-	private final static String TAG = GamePadPaneController.class.getSimpleName();
+	private final static String TAG = ConfigurationPaneController.class.getSimpleName();
 	private final static int EMU_WIDTH = 320;
 	private final static int EMU_HEIGHT = 240;
 	private final static int SCREEN_HEIGHT = 272;
@@ -92,7 +92,7 @@ public final class GamePadPaneController implements Initializable {
 	@FXML private javafx.scene.shape.Rectangle mScreenRect;
 	@FXML private Button mResetScreenButton;
 
-		/**
+	/**
 	 * A OnChangeListener that update the status bar when the GamePad model is saved or modified.
 	 */
 	private final ConfigController.OnChangeListener mOnChangeListener = new ConfigController.OnChangeListener() {

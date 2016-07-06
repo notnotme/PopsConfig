@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<javafx.scene.control.TabPane fx:id="mTabPane" maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.notnotme.popsconfig.controller.GamePadPaneController">
+<javafx.scene.control.TabPane fx:id="mTabPane" maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.notnotme.popsconfig.controller.ConfigurationPaneController">
    <tabs>
       <Tab closable="false" text="%tab_main">
          <content>

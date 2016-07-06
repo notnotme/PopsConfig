@@ -86,7 +86,7 @@ public final class MainWindowController extends FXMLController {
 		// Setup the main content
 		try {
 			mRoot.setCenter(FXMLLoader.load(
-					getClass().getResource("/com/notnotme/popsconfig/ui/fxml/GamePadPane.fxml"),
+					getClass().getResource("/com/notnotme/popsconfig/ui/fxml/ConfigurationPane.fxml"),
 					ResourceBundle.getBundle("com.notnotme.popsconfig.ui.fxml.ui")));
 		} catch (IOException ex) {
 			Logger.getLogger(TAG).log(Level.SEVERE, null, ex);
@@ -117,10 +117,9 @@ public final class MainWindowController extends FXMLController {
 		loadSystemPreset();
 		loadUserPreset();
 
-		// Get the stage form the stage helper (also removing it)
 		// - set title and scene
 		// - set no resizable and center on screen
-		// - set show/hide listeners and show
+		// - set show/hide listeners and show the app window
 		mStage.setTitle(resources.getString("appname"));
 		mStage.setScene(new Scene(mRoot));
 		mStage.centerOnScreen();
